@@ -1,0 +1,17 @@
+language: python
+
+python:
+  - "3.6"
+
+install:
+  - cd api/v1/
+  - pip install -r requirements.txt
+  - pip install coveralls
+
+script: 
+  - pytest --cov-report term-missing --cov=app
+
+after_success:
+  - coveralls
+
+cache: pip
