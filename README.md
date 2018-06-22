@@ -2,8 +2,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2.svg?branch=ft-develop-signup-%23158500122)](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2)
 [![Coverage Status](https://coveralls.io/repos/github/Quantum-35/Ride_My_Way_Challenge2/badge.svg?branch=ft-develop-signup-%23158500122)](https://coveralls.io/github/Quantum-35/Ride_My_Way_Challenge2?branch=ft-develop-signup-%23158500122)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
+
 
 Ride-my App is a carpooling application that provides drivers with the ability to create ride offers
 and passengers to join available ride offers.
