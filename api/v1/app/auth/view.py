@@ -78,13 +78,23 @@ def handle_login():
             }), 400
         check_email = [e for e in users if e['email'] == email]
         
-        
         if check_email:
             user_pass = check_email[0].get('password')
             if check_password_hash(user_pass, password):
+                payload = {
+                    'exp': datetime.utcnow() + timedelta(days=current_app.config.get('AUTH_TOKEN_EXPIRY_DAYS'),
+                                                                       seconds=current_app.config.get(
+                                                                           'AUTH_TOKEN_EXPIRY_SECONDS')),
+                    'iat': datetime.utcnow(),
+                    'sub': check_email[0]['email']}
+                token = jwt.encode(
+                        payload,
+                        current_app.config.get('SECRET_KEY'),
+                        algorithm='HS256').decode('utf-8')
                 return jsonify({
                     'message': 'Logged in successfully',
-                    'status': 'ok'
+                    'status': 'ok',
+                    'token': token
                 })
         else:
           return jsonify({
@@ -95,3 +105,4 @@ def handle_login():
         'message': 'Please Login if already have an account',
         'status': 'success'
     })
+
