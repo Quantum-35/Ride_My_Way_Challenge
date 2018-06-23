@@ -1,10 +1,11 @@
 import unittest
 import json
 
-from app  import create_app
+from app import create_app
 from app.models import users
 
 SIGNUP_URL = '/api/v1/auth/register'
+
 
 class BaseTests (unittest.TestCase):
 
@@ -17,10 +18,9 @@ class BaseTests (unittest.TestCase):
         self.user_model = users
 
         self.test_user = data = {
-                    "username":"quantum",
+                    "username": "quantum",
                     "email": "Quan@gma.com",
                     "address": "3343312",
                     "password": "12345678",
                     "confirm_password": "12345678",
-                    "role":"driver"}
-          
+                    "role": "driver"}
