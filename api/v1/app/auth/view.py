@@ -1,6 +1,10 @@
 import re
-from flask import Blueprint, jsonify, request
+import jwt
+from datetime import datetime, timedelta
+from flask import Blueprint, jsonify, request, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
+
+
 
 # local import
 from app.models import users
@@ -51,8 +55,7 @@ def user_auth():
             user_details['username'] = username
             user_details['email'] = email
             user_details['address'] = address
-            password = password
-            user_details['password'] = password
+            user_details['password'] = generate_password_hash(password)
             users.append(user_details)
             return jsonify({
                 'message': 'signed up successfully {}'.format(users),
@@ -74,12 +77,15 @@ def handle_login():
                 'status': 'failed'
             }), 400
         check_email = [e for e in users if e['email'] == email]
-        check_pass = [e for e in users if e['password'] == password]
-        if check_email and check_pass:
-            return jsonify({
-                'message': 'Logged in successfully',
-                'status': 'ok'
-            })
+        
+        
+        if check_email:
+            user_pass = check_email[0].get('password')
+            if check_password_hash(user_pass, password):
+                return jsonify({
+                    'message': 'Logged in successfully',
+                    'status': 'ok'
+                })
         else:
           return jsonify({
                 'message': 'Wrong username or password',
