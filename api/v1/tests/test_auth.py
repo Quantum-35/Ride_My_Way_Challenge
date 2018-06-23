@@ -66,4 +66,18 @@ class TestAuthentication (BaseTests):
                     content_type='application/json')
         self.assertTrue(response.status_code == 400)
         excpected = {'message': 'short password.Enter atleast 6 characters'}
-        self.assertEquals(excpected, json.loads(response.data))
+        self.assertEquals(excpected['message'], json.loads(response.data)['message'])
+    
+    def test_user_post_invalid_username(self):
+        response = self.client.post(SIGNUP_URL, data=json.dumps({
+                    "username": "1u@",
+                    "email": "quan@gmail.com",
+                    "address": "122kitale",
+                    "password": "1Hellowrodl",
+                    "confirm_password": "1Hellowrodl"}),
+                    content_type='application/json')
+        self.assertTrue(response.status_code == 400)
+        excpected = {'message': 'Wrong username Format'}
+        self.assertEquals(excpected['message'], json.loads(response.data)['message'])
+    
+    
