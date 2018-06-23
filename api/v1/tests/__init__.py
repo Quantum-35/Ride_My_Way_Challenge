@@ -24,3 +24,16 @@ class BaseTests (unittest.TestCase):
                     "password": "12345678",
                     "confirm_password": "12345678",
                     "role": "driver"}
+    def tearDown(self):
+        users.clear()
+
+    def register_user(self):
+        """
+        Helper method for registering a user with dummy data
+        :return:
+        """
+        return self.client.post(
+            SIGNUP_URL,
+            data=json.dumps(self.test_user),
+            content_type='application/json',
+            )

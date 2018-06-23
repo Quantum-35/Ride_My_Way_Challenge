@@ -41,16 +41,51 @@ def user_auth():
             return jsonify({
                 'message': 'short password.Enter atleast 6 characters',
                 'status': 'failed'}), 400
-        user_details = {}
-        user_details['username'] = username
-        user_details['email'] = email
-        user_details['address'] = address
-        password = generate_password_hash(password)
-        user_details['password'] = password
-        users.append(user_details)
-        return jsonify({
-            'message': 'signed up successfully {}'.format(user_details),
-            'status': 'ok'}), 201
+        check_email = [e for e in users if e['email'] == email]
+        if check_email:
+            return jsonify({
+                'message': 'User with that email exists',
+                'status': 'ok'}), 403
+        else:
+            user_details = {}
+            user_details['username'] = username
+            user_details['email'] = email
+            user_details['address'] = address
+            password = password
+            user_details['password'] = password
+            users.append(user_details)
+            return jsonify({
+                'message': 'signed up successfully {}'.format(users),
+                'status': 'ok'}), 201
 
     return jsonify({'message': 'please Register',
                     'status': 'ok'})
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def handle_login():
+    if request.method == 'POST':
+        payload = request.get_json()
+        email = payload['email']
+        password = payload['password']
+        if not email_validator(email):
+            return jsonify({
+                'message': 'Wrong email format',
+                'status': 'failed'
+            }), 400
+        check_email = [e for e in users if e['email'] == email]
+        check_pass = [e for e in users if e['password'] == password]
+        if check_email and check_pass:
+            return jsonify({
+                'message': 'Logged in successfully',
+                'status': 'ok'
+            })
+        else:
+          return jsonify({
+                'message': 'Wrong username or password',
+                'status': 'failed'
+            }), 401  
+    return jsonify({
+        'message': 'Please Login if already have an account',
+        'status': 'success'
+    })

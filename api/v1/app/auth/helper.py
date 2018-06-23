@@ -1,4 +1,7 @@
 import re
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from app.models import users
 
 def email_validator(email):
     '''validates user provided email'''
@@ -21,3 +24,4 @@ def user_name_validator(username):
     '''validates user provided username'''
     if re.match("^[a-zA-Z]*$", username):
         return True
+
