@@ -1,7 +1,7 @@
 # Ride My Way Challenge2
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2.svg?branch=ft-develop-signup-%23158500122)](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2)
-[![Coverage Status](https://coveralls.io/repos/github/Quantum-35/Ride_My_Way_Challenge2/badge.svg?branch=ft-develop-signup-%23158500122)](https://coveralls.io/github/Quantum-35/Ride_My_Way_Challenge2?branch=ft-develop-signup-%23158500122)
+[![Coverage Status](https://coveralls.io/repos/github/Quantum-35/Ride_My_Way_Challenge2/badge.svg?branch=ft-develop-signup-%23158500122)](https://coveralls.io/github/Quantum-35/Ride_My_Way_Challenge2?branch=ft-develop-signup-%23158500122&service=github)
 
 
 Ride-my App is a carpooling application that provides drivers with the ability to create ride offers
