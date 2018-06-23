@@ -36,12 +36,6 @@ def user_auth():
         user_details['address'] = address
         user_details['password'] = password
         users.append(user_details)
-        if payload['role']:
-            user_details['role'] = 'driver'
-            users.append(user_details)
-        else:
-            user_details['role'] = 'passenger'
-            users.append(user_details)
         return jsonify({
             'message': 'signed up successfully {}'.format(user_details),
             'status': 'ok'}), 201
