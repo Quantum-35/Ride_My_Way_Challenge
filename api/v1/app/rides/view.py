@@ -21,10 +21,7 @@ def handle_rides(curr_user):
                      car_model=car_model, driver_name=driver_name,
                      depature=depature)
         ride.save()
-        return jsonify({
-            'message': 'create ride offer',
-            'rides': ride.dicts()
-        }), 201
+        return jsonify( ride.dicts()), 201
     else:
         return jsonify({
             'message':Rides.db_rides,

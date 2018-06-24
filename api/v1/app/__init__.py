@@ -13,5 +13,7 @@ def create_app(config_name):
     app.register_blueprint(auth, url_prefix=URL_PREFIX+'/auth/')
     from app.rides.view import rides
     app.register_blueprint(rides, url_prefix=URL_PREFIX)
+    from app.errors import errors
+    app.register_blueprint(errors)
 
     return app
