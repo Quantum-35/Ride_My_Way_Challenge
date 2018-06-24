@@ -1,1 +1,1 @@
-web : python api/v1/run.py
+web : --chdir api/v1 app:app
