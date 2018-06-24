@@ -18,13 +18,20 @@ class BaseTests (unittest.TestCase):
     # initialize the models
         self.user_model = User.db_users
 
-        self.test_user = data = {
+        self.test_user = {
                     "username": "quantum",
                     "email": "Quan@gma.com",
                     "address": "3343312",
                     "password": "12345678",
                     "confirm_password": "12345678",
                     "role": "driver"}
+        self.test_ride_data = {
+            "car_model": "Mazda",
+            "depature": "3343",
+            "destination": "Nakuru",
+            "driver_name": "quantum",
+            "origin": "kitale"
+        }
     def tearDown(self):
         self.user_model.clear()
 

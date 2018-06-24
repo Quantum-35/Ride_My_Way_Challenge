@@ -174,18 +174,6 @@ class TestAuthentication (BaseTests):
         expected = {'message': 'Invalid token. Please sign in again'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
         
-    def test_empty_header_token(self):
-        response = self.register_user()
-        self.assertTrue(response.status_code == 201)
-        response = self.login_user()
-        self.assertTrue(response.status_code == 200)
-        headers = dict(Authorization='Bearer {}'.format(''))
-        response = self.client.post(LOGOUT_URL,
-                                   content_type='application/json',
-                                   headers=headers)
-        expected = {'message': 'Please login first, your session might have expired'}
-        self.assertEquals(expected['message'], json.loads(response.data)['message'])
-
     def test_without_header_token(self):
         response = self.register_user()
         self.assertTrue(response.status_code == 201)
@@ -193,7 +181,7 @@ class TestAuthentication (BaseTests):
         self.assertTrue(response.status_code == 200)
         response = self.client.post(LOGOUT_URL,
                                    content_type='application/json')
-        expected = {'message': 'Ensure you have logged in and received a valid token'}
+        expected = {'message': 'Token is missing'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
     
     

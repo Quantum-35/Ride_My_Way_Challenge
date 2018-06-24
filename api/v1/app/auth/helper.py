@@ -1,7 +1,7 @@
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 
 from app.models import users,User
 
@@ -28,17 +28,39 @@ def user_name_validator(username):
         return True
 
 def token_required(f):
-    '''checks user have valid tokens'''
+   
     @wraps(f)
-    def decorated(*args, **kwargs):
+    def decorated_function(*args, **kwargs):
+        token = None
+
+        if 'Authorization' in request.headers:
+            auth_header = request.headers['Authorization']
+            try:
+                token = auth_header.split(" ")[1]
+            except IndexError:
+                return make_response(jsonify({
+                    'status': 'failed',
+                    'message': 'Provide a valid auth token'
+                })), 403
+
+        if not token:
+            return make_response(jsonify({
+                'status': 'failed',
+                'message': 'Token is missing'
+            })), 401
+
         try:
-            auth_header = request.headers.get('Authorization', None)
-            access_token = auth_header.split(' ')[1]
-            if access_token:
-                email = User.decode_auth_token(access_token)
-                current_user = User.get_by_email(email=email)
-                return f(current_user, *args, **kwargs)
-            return jsonify({'message':"Please login first, your session might have expired"}), 401
-        except Exception as e:
-            return jsonify({'message': 'Ensure you have logged in and received a valid token', 'error':str(e)}),400
-    return decorated
+            decode_response = User.decode_auth_token(token)
+            current_user = User.get_by_email(email=decode_response)
+        except:
+            message = 'Invalid token'
+            if isinstance(decode_response, str):
+                message = decode_response
+            return make_response(jsonify({
+                'status': 'failed',
+                'message': message
+            })), 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated_function

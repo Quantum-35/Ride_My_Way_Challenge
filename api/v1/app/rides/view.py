@@ -6,9 +6,9 @@ from app.auth.helper import token_required
 
 rides = Blueprint('rides', __name__)
 
-@rides.route('/rides', methods=['GET', 'POST'])
+@rides.route('/rides/', methods=['GET', 'POST'])
 @token_required
-def handle_rides(crate_user):
+def handle_rides(curr_user):
     if request.method == 'POST':
         payload = request.get_json()
 
@@ -24,8 +24,30 @@ def handle_rides(crate_user):
         return jsonify({
             'message': 'create ride offer',
             'rides': ride.dicts()
-        })
+        }), 201
     else:
         return jsonify({
-            'message':Rides.db_rides
-        })
+            'message':Rides.db_rides,
+            'status': 'ok'
+        }), 200
+
+@rides.route('/rides/<int:ride_id>', methods=['GET'])
+@token_required
+def handle_singleroute(curr_user, ride_id):
+    selected_ride = Rides.db_rides
+    if selected_ride:
+        ride = [x for x in selected_ride if x['id'] == ride_id]
+        if ride:
+            return jsonify({
+            'message': ride,
+            'status': 'ok'}), 200
+        else:
+            return jsonify({
+            'message': 'Ride with that id Does not exist',
+            'status': 'Failed'}), 404
+    else:
+        return jsonify({
+        'message': 'Ride with that id Does not exist',
+        'status': 'Failed'
+    }), 404
+    

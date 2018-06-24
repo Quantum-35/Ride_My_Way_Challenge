@@ -103,7 +103,7 @@ class BlackListToken:
 
 class Rides:
     db_rides = []
-    ride_id = 0
+    ride_id = 1
 
     def __init__(self, origin, destination, car_model, driver_name, depature):
         self.id = Rides.ride_id
@@ -116,20 +116,14 @@ class Rides:
 
     def save(self):
         ride_detail = {}
-        ride_detail['id'] = Rides.ride_id
+        ride_detail['id'] = Rides.ride_id-1
         ride_detail['origin'] = self.origin
         ride_detail['destination'] = self.destination
         ride_detail['car_model'] = self.car_model
         ride_detail['driver_name'] = self.driver_name
         ride_detail['depature'] = self.depature
         Rides.db_rides.append(ride_detail)
-    
-    @staticmethod
-    def get_by_id(rd_id):
-        ride = [x for x in Rides.db_rides if x['id'] == rd_id]
-        if ride:
-            return ride['id']
-        return None
+
     
     def dicts(self):
         return dict(
