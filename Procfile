@@ -1,1 +1,1 @@
-web : uwsgi uwsgi.ini
+web : --chdir api/v1 app:app
