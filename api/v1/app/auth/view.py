@@ -7,11 +7,12 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 # local import
-from app.models import users
+from app.models import users, User, BlackListToken
 from app.auth.helper import (email_validator,
                              address_validator,
                              password_validator,
-                             user_name_validator)
+                             user_name_validator,
+                             token_required)
 
 auth = Blueprint('auth', __name__)
 
@@ -45,21 +46,17 @@ def user_auth():
             return jsonify({
                 'message': 'short password.Enter atleast 6 characters',
                 'status': 'failed'}), 400
-        check_email = [e for e in users if e['email'] == email]
-        if check_email:
+        user = User.get_by_email(email=email)
+        if not user:
+            reg_user = User(username=username, email=email, address=address, password=password)
+            reg_user.save()
+            return jsonify({
+                'message': 'signed up successfully {}'.format(reg_user.dicts()),
+                'status': 'ok'}), 201
+        else:
             return jsonify({
                 'message': 'User with that email exists',
                 'status': 'ok'}), 403
-        else:
-            user_details = {}
-            user_details['username'] = username
-            user_details['email'] = email
-            user_details['address'] = address
-            user_details['password'] = generate_password_hash(password)
-            users.append(user_details)
-            return jsonify({
-                'message': 'signed up successfully {}'.format(users),
-                'status': 'ok'}), 201
 
     return jsonify({'message': 'please Register',
                     'status': 'ok'})
@@ -76,21 +73,13 @@ def handle_login():
                 'message': 'Wrong email format',
                 'status': 'failed'
             }), 400
-        check_email = [e for e in users if e['email'] == email]
-        
+        check_email = User.get_by_email(email=email)
         if check_email:
-            user_pass = check_email[0].get('password')
+            user_pass = User.db_users[0]['password']
             if check_password_hash(user_pass, password):
-                payload = {
-                    'exp': datetime.utcnow() + timedelta(days=current_app.config.get('AUTH_TOKEN_EXPIRY_DAYS'),
-                                                                       seconds=current_app.config.get(
-                                                                           'AUTH_TOKEN_EXPIRY_SECONDS')),
-                    'iat': datetime.utcnow(),
-                    'sub': check_email[0]['email']}
-                token = jwt.encode(
-                        payload,
-                        current_app.config.get('SECRET_KEY'),
-                        algorithm='HS256').decode('utf-8')
+                eml=check_email['email'] 
+                token = User.encode_auth_token(user_email=eml).decode('utf-8')
+                # token = 'aaa'
                 return jsonify({
                     'message': 'Logged in successfully',
                     'status': 'ok',
@@ -106,3 +95,22 @@ def handle_login():
         'status': 'success'
     })
 
+@auth.route('/logout', methods=['POST'])
+@token_required
+def handle_logout(current_user):
+    auth_header = request.headers.get('Authorization')
+    if auth_header:
+        auth_token = auth_header.split(" ")[1]
+        decoded_token_response = User.decode_auth_token(auth_token)
+        if not isinstance(decoded_token_response, str):
+            token = BlackListToken(auth_token)
+            token.blacklist()
+            return jsonify({
+                    'message': 'Successfully logged out',
+                    'status': 'ok'}), 200
+        return jsonify({
+                        'message': decoded_token_response,
+                        'status': 'failed'}), 401
+    return jsonify({
+                    'Message': 'Provide an authorization header',
+                    'status': 'ok'}), 403

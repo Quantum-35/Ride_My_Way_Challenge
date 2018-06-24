@@ -1,7 +1,9 @@
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
+from flask import request, jsonify
 
-from app.models import users
+from app.models import users,User
 
 def email_validator(email):
     '''validates user provided email'''
@@ -25,3 +27,18 @@ def user_name_validator(username):
     if re.match("^[a-zA-Z]*$", username):
         return True
 
+def token_required(f):
+    '''checks user have valid tokens'''
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        try:
+            auth_header = request.headers.get('Authorization', None)
+            access_token = auth_header.split(' ')[1]
+            if access_token:
+                email = User.decode_auth_token(access_token)
+                current_user = User.get_by_email(email=email)
+                return f(current_user, *args, **kwargs)
+            return jsonify({'message':"Please login first, your session might have expired"}), 401
+        except Exception as e:
+            return jsonify({'message': 'Ensure you have logged in and received a valid token', 'error':str(e)}),400
+    return decorated

@@ -1,3 +1,4 @@
+import time
 import unittest
 from app import create_app
 from flask import json
@@ -6,6 +7,7 @@ from tests import BaseTests
 
 SIGNUP_URL = '/api/v1/auth/register'
 SIGNIN_URL = '/api/v1/auth/login'
+LOGOUT_URL = '/api/v1/auth/logout'
 
 
 class TestAuthentication (BaseTests):
@@ -131,5 +133,71 @@ class TestAuthentication (BaseTests):
         self.assertTrue(response.status_code == 200)
         expected = {'message': 'Logged in successfully'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    def test_valid_user_logout(self):
+        response = self.register_user()
+        self.assertTrue(response.status_code == 201)
+        response = self.login_user()
+        self.assertTrue(response.status_code == 200)
+        access_token = json.loads(response.data)['token']
+        headers = dict(Authorization='Bearer {}'.format(access_token))
+        response = self.client.post(LOGOUT_URL,
+                                   content_type='application/json',
+                                   headers=headers)
+        expected = {'message': 'Quan@gma.com'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    def test_expired_user_token(self):
+        response = self.register_user()
+        self.assertTrue(response.status_code == 201)
+        response = self.login_user()
+        self.assertTrue(response.status_code == 200)
+        access_token = json.loads(response.data)['token']
+        # Pause for 3 seconds
+        time.sleep(self.app.config['AUTH_TOKEN_EXPIRATION_TIME_DURING_TESTS'])
+        headers = dict(Authorization='Bearer {}'.format(access_token))
+        response = self.client.post(LOGOUT_URL,
+                                   content_type='application/json',
+                                   headers=headers)
+        expected = {'message': 'Signature expired, Please sign in again'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+    
+    def test_invalid_user_token(self):
+        response = self.register_user()
+        self.assertTrue(response.status_code == 201)
+        response = self.login_user()
+        self.assertTrue(response.status_code == 200)
+        headers = dict(Authorization='Bearer {}'.format('This is not a valid token'))
+        response = self.client.post(LOGOUT_URL,
+                                   content_type='application/json',
+                                   headers=headers)
+        expected = {'message': 'Invalid token. Please sign in again'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+        
+    def test_empty_header_token(self):
+        response = self.register_user()
+        self.assertTrue(response.status_code == 201)
+        response = self.login_user()
+        self.assertTrue(response.status_code == 200)
+        headers = dict(Authorization='Bearer {}'.format(''))
+        response = self.client.post(LOGOUT_URL,
+                                   content_type='application/json',
+                                   headers=headers)
+        expected = {'message': 'Please login first, your session might have expired'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    def test_without_header_token(self):
+        response = self.register_user()
+        self.assertTrue(response.status_code == 201)
+        response = self.login_user()
+        self.assertTrue(response.status_code == 200)
+        response = self.client.post(LOGOUT_URL,
+                                   content_type='application/json')
+        expected = {'message': 'Ensure you have logged in and received a valid token'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+    
+    
+        
+
     
     

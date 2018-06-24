@@ -2,9 +2,10 @@ import unittest
 import json
 
 from app import create_app
-from app.models import users
+from app.models import users, User
 
 SIGNUP_URL = '/api/v1/auth/register'
+SIGNIN_URL = '/api/v1/auth/login'
 
 
 class BaseTests (unittest.TestCase):
@@ -15,7 +16,7 @@ class BaseTests (unittest.TestCase):
         self.app_context.push()
         self.client = self.app.test_client()
     # initialize the models
-        self.user_model = users
+        self.user_model = User.db_users
 
         self.test_user = data = {
                     "username": "quantum",
@@ -25,7 +26,7 @@ class BaseTests (unittest.TestCase):
                     "confirm_password": "12345678",
                     "role": "driver"}
     def tearDown(self):
-        users.clear()
+        self.user_model.clear()
 
     def register_user(self):
         """
@@ -37,3 +38,10 @@ class BaseTests (unittest.TestCase):
             data=json.dumps(self.test_user),
             content_type='application/json',
             )
+    def login_user(self):
+        self.register_user()
+        return self.client.post(
+            SIGNIN_URL,
+            data=json.dumps(self.test_user),
+            content_type='application/json'
+        )
