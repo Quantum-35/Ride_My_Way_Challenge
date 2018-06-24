@@ -48,3 +48,28 @@ def handle_singleroute(curr_user, ride_id):
         'status': 'Failed'
     }), 404
     
+@rides.route('/rides/<int:ride_id>/requests', methods=['POST'])
+@token_required
+def handle_join(curr_user, ride_id):
+    selected_ride = Rides.db_rides
+    if selected_ride:
+        ride = [x for x in selected_ride if x['id'] == ride_id]
+        if ride:
+            payload = request.get_json()
+            pickup = payload['pickup']
+            destination = payload['destination']
+            pickuptime = payload['pickuptime']
+            join_dict={'Car id':ride_id, 'Pickup Location':pickup, 'Destination': destination,
+                       'Pickup Time': pickuptime}
+            Rides.db_request.append(join_dict)
+            k = Rides.db_request
+            return jsonify(k), 201
+        else:
+            return jsonify({
+            'message': 'Ride with that id Does not exist',
+            'status': 'Failed'}), 404
+    else:
+        return jsonify({
+        'message': 'Riide with that id Does not exist',
+        'status': 'Failed'
+    }), 404

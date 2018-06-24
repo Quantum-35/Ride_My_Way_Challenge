@@ -103,6 +103,7 @@ class BlackListToken:
 
 class Rides:
     db_rides = []
+    db_request = []
     ride_id = 1
 
     def __init__(self, origin, destination, car_model, driver_name, depature):
@@ -123,7 +124,12 @@ class Rides:
         ride_detail['driver_name'] = self.driver_name
         ride_detail['depature'] = self.depature
         Rides.db_rides.append(ride_detail)
-
+    
+    @classmethod
+    def make_request(cls, rd_id):
+        rd_req = {}
+        rd_req['ride_requestid'] = rd_id
+        Rides.db_rides.append(rd_req)
     
     def dicts(self):
         return dict(
