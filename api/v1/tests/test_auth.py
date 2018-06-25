@@ -70,7 +70,7 @@ class TestAuthentication (BaseTests):
         self.assertTrue(response.status_code == 400)
         expected = {'message': 'short password.Enter atleast 6 characters'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-    
+
     def test_user_post_invalid_username(self):
         response = self.client.post(SIGNUP_URL, data=json.dumps({
                     "username": "1u@",
@@ -82,11 +82,11 @@ class TestAuthentication (BaseTests):
         self.assertTrue(response.status_code == 400)
         expected = {'message': 'Wrong username Format'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-    
+
     def test_user_post_user_already_registerd(self):
         self.register_user()
         response = self.client.post(SIGNUP_URL, data=json.dumps(self.test_user),
-                    content_type='application/json')
+                                    content_type='application/json')
         self.assertTrue(response.status_code == 403)
         expected = {'message': 'User with that email exists'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
@@ -95,41 +95,38 @@ class TestAuthentication (BaseTests):
         response = self.client.get(SIGNIN_URL,
                                    content_type='application/json')
         self.assertTrue(response.status_code == 200)
-        expected ={'message': 'Please Login if already have an account'}
+        expected = {'message': 'Please Login if already have an account'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-    
+
     def test_user_login_with_wrong_email_format(self):
         response = self.client.post(SIGNIN_URL,
-                                   data=json.dumps({
+                                    data=json.dumps({
                                        "email": "quangmailcom",
-                                       "password": 'Quanajajsajssajs'
-                                   }),
-                                   content_type='application/json')
+                                       "password": 'Quanajajsajssajs'}),
+                                    content_type='application/json')
         self.assertTrue(response.status_code == 400)
         expected = {'message': 'Wrong email format'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-    
+
     def test_user_login_with_invalid_valid_credantials(self):
         self.register_user()
         response = self.client.post(SIGNIN_URL,
-                                   data=json.dumps({
+                                    data=json.dumps({
                                        "email": "Quant@gma.com",
-                                       "password": '12345678'
-                                   }),
-                                   content_type='application/json')
+                                       "password": '12345678'}),
+                                    content_type='application/json')
         print(response.data)
         self.assertTrue(response.status_code == 401)
         expected = {'message': 'Wrong username or password'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-    
+
     def test_user_login_with_valid_credantials(self):
         self.register_user()
         response = self.client.post(SIGNIN_URL,
-                                   data=json.dumps({
+                                    data=json.dumps({
                                        "email": "Quan@gma.com",
-                                       "password": '12345678'
-                                   }),
-                                   content_type='application/json')
+                                       "password": '12345678'}),
+                                    content_type='application/json')
         self.assertTrue(response.status_code == 200)
         expected = {'message': 'Logged in successfully'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
@@ -142,8 +139,8 @@ class TestAuthentication (BaseTests):
         access_token = json.loads(response.data)['token']
         headers = dict(Authorization='Bearer {}'.format(access_token))
         response = self.client.post(LOGOUT_URL,
-                                   content_type='application/json',
-                                   headers=headers)
+                                    content_type='application/json',
+                                    headers=headers)
         expected = {'message': 'Quan@gma.com'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
@@ -157,11 +154,11 @@ class TestAuthentication (BaseTests):
         time.sleep(self.app.config['AUTH_TOKEN_EXPIRATION_TIME_DURING_TESTS'])
         headers = dict(Authorization='Bearer {}'.format(access_token))
         response = self.client.post(LOGOUT_URL,
-                                   content_type='application/json',
-                                   headers=headers)
+                                    content_type='application/json',
+                                    headers=headers)
         expected = {'message': 'Signature expired, Please sign in again'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-    
+
     def test_invalid_user_token(self):
         response = self.register_user()
         self.assertTrue(response.status_code == 201)
@@ -169,23 +166,17 @@ class TestAuthentication (BaseTests):
         self.assertTrue(response.status_code == 200)
         headers = dict(Authorization='Bearer {}'.format('This is not a valid token'))
         response = self.client.post(LOGOUT_URL,
-                                   content_type='application/json',
-                                   headers=headers)
+                                    content_type='application/json',
+                                    headers=headers)
         expected = {'message': 'Invalid token. Please sign in again'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-        
+
     def test_without_header_token(self):
         response = self.register_user()
         self.assertTrue(response.status_code == 201)
         response = self.login_user()
         self.assertTrue(response.status_code == 200)
         response = self.client.post(LOGOUT_URL,
-                                   content_type='application/json')
+                                    content_type='application/json')
         expected = {'message': 'Token is missing'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-    
-    
-        
-
-    
-    

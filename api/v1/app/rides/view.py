@@ -6,6 +6,7 @@ from app.auth.helper import token_required
 
 rides = Blueprint('rides', __name__)
 
+
 @rides.route('/rides/', methods=['GET', 'POST'])
 @token_required
 def handle_rides(curr_user):
@@ -17,16 +18,17 @@ def handle_rides(curr_user):
         car_model = payload['car_model']
         driver_name = payload['driver_name']
         depature = payload['depature']
-        ride = Rides(origin=origin, destination=destination, 
+        ride = Rides(origin=origin, destination=destination,
                      car_model=car_model, driver_name=driver_name,
                      depature=depature)
         ride.save()
-        return jsonify( ride.dicts()), 201
+        return jsonify(ride.dicts()), 201
     else:
         return jsonify({
-            'message':Rides.db_rides,
+            'message': Rides.db_rides,
             'status': 'ok'
         }), 200
+
 
 @rides.route('/rides/<int:ride_id>', methods=['GET'])
 @token_required
@@ -36,18 +38,18 @@ def handle_singleroute(curr_user, ride_id):
         ride = [x for x in selected_ride if x['id'] == ride_id]
         if ride:
             return jsonify({
-            'message': ride,
-            'status': 'ok'}), 200
+                'message': ride,
+                'status': 'ok'}), 200
         else:
             return jsonify({
-            'message': 'Ride with that id Does not exist',
-            'status': 'Failed'}), 404
+                'message': 'Ride with that id Does not exist',
+                'status': 'Failed'}), 404
     else:
         return jsonify({
-        'message': 'Ride with that id Does not exist',
-        'status': 'Failed'
-    }), 404
-    
+            'message': 'Ride with that id Does not exist',
+            'status': 'Failed'}), 404
+
+
 @rides.route('/rides/<int:ride_id>/requests', methods=['POST'])
 @token_required
 def handle_join(curr_user, ride_id):
@@ -59,17 +61,18 @@ def handle_join(curr_user, ride_id):
             pickup = payload['pickup']
             destination = payload['destination']
             pickuptime = payload['pickuptime']
-            join_dict={'Car id':ride_id, 'Pickup Location':pickup, 'Destination': destination,
-                       'Pickup Time': pickuptime}
+            join_dict = {'Car id': ride_id,
+                         'Pickup Location': pickup,
+                         'Destination': destination,
+                         'Pickup Time': pickuptime}
             Rides.db_request.append(join_dict)
             k = Rides.db_request
             return jsonify(k), 201
         else:
             return jsonify({
-            'message': 'Ride with that id Does not exist',
-            'status': 'Failed'}), 404
+                'message': 'Ride with that id Does not exist',
+                'status': 'Failed'}), 404
     else:
         return jsonify({
-        'message': 'Riide with that id Does not exist',
-        'status': 'Failed'
-    }), 404
+            'message': 'Riide with that id Does not exist',
+            'status': 'Failed'}), 404

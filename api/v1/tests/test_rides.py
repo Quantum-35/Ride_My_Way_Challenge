@@ -27,9 +27,9 @@ class TestRides(BaseTests):
         access_token = json.loads(response.data)['token']
         headers = dict(Authorization='Bearer {}'.format(access_token))
         response = self.client.post('/api/v1/rides/',
-                         data = json.dumps(self.test_ride_data),
-                         content_type='application/json',
-                         headers=headers)
+                                    data=json.dumps(self.test_ride_data),
+                                    content_type='application/json',
+                                    headers=headers)
         self.assertTrue(response.status_code == 201)
         response = self.client.get('/api/v1/rides/1',
                                    content_type='application/json',
@@ -44,16 +44,16 @@ class TestRides(BaseTests):
 
         response = self.login_user()
         self.assertTrue(response.status_code == 200)
-        
+
         access_token = json.loads(response.data)['token']
         headers = dict(Authorization='Bearer {}'.format(access_token))
 
         response = self.client.post(
                             '/api/v1/rides/12/requests',
                             data=json.dumps({
-                                "pickup":"Nairobi",
-                                "destination":"Nakuru",
-                                "pickuptime":"122312"}),
+                                "pickup": "Nairobi",
+                                "destination": "Nakuru",
+                                "pickuptime": "122312"}),
                             headers=headers,
                             content_type='application/json')
         self.assertTrue(response.status_code == 404)
@@ -68,9 +68,9 @@ class TestRides(BaseTests):
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
         response = self.client.post('/api/v1/rides/',
-                         data = json.dumps(self.test_ride_data),
-                         content_type='application/json',
-                         headers=headers)
+                                    data=json.dumps(self.test_ride_data),
+                                    content_type='application/json',
+                                    headers=headers)
         self.assertTrue(response.status_code == 201)
 
         response = self.client.get('/api/v1/rides/11',
@@ -83,9 +83,9 @@ class TestRides(BaseTests):
         response = self.client.post(
                             '/api/v1/rides/1/requests',
                             data=json.dumps({
-                                "pickup":"Nairobi",
-                                "destination":"Nakuru",
-                                "pickuptime":"122312"}),
+                                "pickup": "Nairobi",
+                                "destination": "Nakuru",
+                                "pickuptime": "122312"}),
                             headers=headers,
                             content_type='application/json')
         print(response.data)
@@ -94,14 +94,11 @@ class TestRides(BaseTests):
         response = self.client.post(
                             '/api/v1/rides/12/requests',
                             data=json.dumps({
-                                "pickup":"Nairobi",
-                                "destination":"Nakuru",
-                                "pickuptime":"122312"}),
+                                "pickup": "Nairobi",
+                                "destination": "Nakuru",
+                                "pickuptime": "122312"}),
                             headers=headers,
                             content_type='application/json')
         self.assertTrue(response.status_code == 404)
         expected = {'message': 'Ride with that id Does not exist'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
-
-
-    

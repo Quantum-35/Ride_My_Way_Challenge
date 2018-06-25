@@ -2,7 +2,7 @@ import unittest
 import json
 
 from app import create_app
-from app.models import users, User
+from app.models import User
 
 SIGNUP_URL = '/api/v1/auth/register'
 SIGNIN_URL = '/api/v1/auth/login'
@@ -32,6 +32,7 @@ class BaseTests (unittest.TestCase):
             "driver_name": "quantum",
             "origin": "kitale"
         }
+
     def tearDown(self):
         self.user_model.clear()
 
@@ -43,8 +44,8 @@ class BaseTests (unittest.TestCase):
         return self.client.post(
             SIGNUP_URL,
             data=json.dumps(self.test_user),
-            content_type='application/json',
-            )
+            content_type='application/json',)
+
     def login_user(self):
         self.register_user()
         return self.client.post(

@@ -5,9 +5,8 @@ from flask import Blueprint, jsonify, request, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-
 # local import
-from app.models import users, User, BlackListToken
+from app.models import User, BlackListToken
 from app.auth.helper import (email_validator,
                              address_validator,
                              password_validator,
@@ -48,7 +47,10 @@ def user_auth():
                 'status': 'failed'}), 400
         user = User.get_by_email(email=email)
         if not user:
-            reg_user = User(username=username, email=email, address=address, password=password)
+            reg_user = User(username=username,
+                            email=email,
+                            address=address,
+                            password=password)
             reg_user.save()
             return jsonify({
                 'message': 'signed up successfully {}'.format(reg_user.dicts()),
@@ -77,7 +79,7 @@ def handle_login():
         if check_email:
             user_pass = User.db_users[0]['password']
             if check_password_hash(user_pass, password):
-                eml=check_email['email'] 
+                eml = check_email['email']
                 token = User.encode_auth_token(user_email=eml).decode('utf-8')
                 # token = 'aaa'
                 return jsonify({
@@ -86,14 +88,13 @@ def handle_login():
                     'token': token
                 })
         else:
-          return jsonify({
-                'message': 'Wrong username or password',
-                'status': 'failed'
-            }), 401  
+            return jsonify({
+                    'message': 'Wrong username or password',
+                    'status': 'failed'}), 401
     return jsonify({
         'message': 'Please Login if already have an account',
-        'status': 'success'
-    })
+        'status': 'success'})
+
 
 @auth.route('/logout', methods=['POST'])
 @token_required

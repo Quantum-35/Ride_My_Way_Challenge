@@ -7,7 +7,6 @@ errors = Blueprint('errors', __name__)
 def route_not_found(e):
     """
     Return a custom 404 Http response message for missing or not found routes.
-    
     """
     return jsonify({
         'message': 'Endpoint not found',
@@ -18,7 +17,6 @@ def route_not_found(e):
 def method_not_found(e):
     """
     Custom response for methods not allowed for the requested URLs
-    
     """
     return jsonify({
         'message': 'The method is not allowed for the requested URL',

@@ -3,7 +3,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from flask import request, jsonify, make_response
 
-from app.models import users,User
+from app.models import User
+
 
 def email_validator(email):
     '''validates user provided email'''
@@ -11,6 +12,8 @@ def email_validator(email):
             "^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$",
             email):
         return True
+
+
 def address_validator(address):
     '''Handles the validation of address'''
     if re.match(
@@ -18,17 +21,20 @@ def address_validator(address):
             address):
         return True
 
+
 def password_validator(password):
     '''validates user provided password length'''
     if len(password) > 6:
         return True
+
+
 def user_name_validator(username):
     '''validates user provided username'''
     if re.match("^[a-zA-Z]*$", username):
         return True
 
+
 def token_required(f):
-   
     @wraps(f)
     def decorated_function(*args, **kwargs):
         token = None
