@@ -111,12 +111,6 @@ following response will be returned.
 }
 ```
 
-### Running tests without coverage
-You can now run the tests from the terminal
-```
-python manage.py test
-```
-
 ### Running tests with coverage
 You can also run tests with coverage by running this command in the terminal
 ```
