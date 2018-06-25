@@ -7,7 +7,7 @@
 Ride-my App is a carpooling application that provides drivers with the ability to create ride offers
 and passengers to join available ride offers.
 
-You can get the live sersion of the back end [here](https://andela-challenge2-ride-with-me.herokuapp.com)
+You can get the live version in heroku of the backend [here](https://andela-challenge2-ride-with-me.herokuapp.com)
 #### To use it 
 ```
 1.Ensure you have postman installed in your system
