@@ -120,6 +120,18 @@ class TestAuthentication (BaseTests):
         expected = {'message': 'Wrong username or password'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
+    def test_user_login_with_invalid_wrong_password(self):
+        self.register_user()
+        response = self.client.post(SIGNIN_URL,
+                                    data=json.dumps({
+                                       "email": "Quan@gma.com",
+                                       "password": 'wrongpassword'}),
+                                    content_type='application/json')
+        print(response.data)
+        self.assertTrue(response.status_code == 401)
+        expected = {'message': 'Wrong username or password'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
     def test_user_login_with_valid_credantials(self):
         self.register_user()
         response = self.client.post(SIGNIN_URL,

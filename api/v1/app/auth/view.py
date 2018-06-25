@@ -81,12 +81,15 @@ def handle_login():
             if check_password_hash(user_pass, password):
                 eml = check_email['email']
                 token = User.encode_auth_token(user_email=eml).decode('utf-8')
-                # token = 'aaa'
                 return jsonify({
                     'message': 'Logged in successfully',
                     'status': 'ok',
                     'token': token
                 })
+            else:
+                return jsonify({
+                    'message': 'Wrong username or password',
+                    'status': 'failed'}), 401
         else:
             return jsonify({
                     'message': 'Wrong username or password',
