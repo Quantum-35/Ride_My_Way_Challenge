@@ -1,1 +1,1 @@
-web: python --chdir api/v1  run.py --log-file=-
+web: python api/v1/run.py --log-file=-
