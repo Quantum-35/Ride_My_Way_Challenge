@@ -1,1 +1,1 @@
-web: gunicorn --chdir api/v1 run:app --log-file=-
+web: gunicorn --chdir api/v1 run:app 
