@@ -1,1 +1,1 @@
-web: gunicorn --chdir api/v1 python run.py --log-file=-
+web: --chdir api/v1 python run.py --log-file=-
