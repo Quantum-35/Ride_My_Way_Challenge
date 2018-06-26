@@ -39,7 +39,7 @@ you're reading.**
   ```
   $ git clone https://github.com/Quantum-35/Ride_My_Way.git
   $ cd Ride_MY_Way/api/v1
-  $ git checkout ft-develop-signup-#158500122
+  $ git checkout develop
   ```
 ### Installation and Usage
 #### First
