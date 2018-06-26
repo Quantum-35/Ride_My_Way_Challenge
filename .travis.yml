@@ -13,6 +13,7 @@ before_script:
 
 script: 
   - cd api/v2/
+  - ls -la
   - pytest --cov-report term-missing --cov=app
 
 after_success:
