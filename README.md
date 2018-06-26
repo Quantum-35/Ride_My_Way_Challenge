@@ -31,11 +31,6 @@ You can get the link to download Latest version the above here:
     
    3. Postman [here](https://www.getpostman.com/apps)
 
-## Usage
-- [quick start](#Quick-Start)
-- [Installation](#Installation-and-Usage)
-- [Running tests](#running-tests)
-
 
 ### Quick Start
 **Be sure to use the same version of the code as the version of the docs
