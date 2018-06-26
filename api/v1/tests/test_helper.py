@@ -8,14 +8,14 @@ from app.auth.helper import (email_validator,
 
 class TestHelper(unittest.TestCase):
 
-    def test_valid_email(self):
+    def test_wether_email_is_valid(self):
         self.assertTrue(email_validator('quantum@gmail.com'))
 
-    def test_address(self):
+    def test_wether_address_is_valid(self):
         self.assertTrue(address_validator('123 Kitale'))
 
-    def test_password(self):
+    def test_password_is_valid(self):
         self.assertTrue(password_validator('Hello World'))
 
-    def test_user_name(self):
+    def test_user_name_is_valid(self):
         self.assertTrue(user_name_validator('Quantum'))
