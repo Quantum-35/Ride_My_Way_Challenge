@@ -7,8 +7,12 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls
 
+before_script:
+
+  - psql -c 'create database test_andela;' -U postgres
+
 script: 
-  - cd api/v1/
+  - cd api/v2/
   - pytest --cov-report term-missing --cov=app
 
 after_success:
