@@ -1,11 +1,18 @@
 # Ride My Way Challenge2
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2.svg?branch=ft-develop-signup-%23158500122)](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2)
-[![Coverage Status](https://coveralls.io/repos/github/Quantum-35/Ride_My_Way_Challenge2/badge.svg?branch=ft-develop-signup-%23158500122)](https://coveralls.io/github/Quantum-35/Ride_My_Way_Challenge2?branch=ft-develop-signup-%23158500122&service=github)
+[![Coverage Status](https://coveralls.io/repos/github/Quantum-35/Ride_My_Way_Challenge2/badge.svg?branch=develop)](https://coveralls.io/github/Quantum-35/Ride_My_Way_Challenge2?branch=develop)
 
 
 Ride-my App is a carpooling application that provides drivers with the ability to create ride offers
 and passengers to join available ride offers.
+
+You can get the live version in heroku of the backend [here](https://andela-challenge2-ride-with-me.herokuapp.com)
+#### To use it 
+```
+1.Ensure you have postman installed in your system
+2.Just copy the link to post man and start making the requests
+```
 
 ### Prerequisites
 
@@ -18,17 +25,11 @@ You need to have the Following before getting Started
 ```
 You can get the link to download Latest version the above here:
 
-      1.Python [here](https://www.python.org/downloads/)
-
-      2.Flask [here](http://flask.pocoo.org/docs/1.0/installation/)
-
-     3. Postman [here](https://www.getpostman.com/apps)
-
-
-## Usage
-- [quick start](#Quick-Start)
-- [Installation](#Installation-and-Usage)
-- [Running tests](#running-tests)
+   1.Python [here](https://www.python.org/downloads/)
+    
+   2.Flask [here](http://flask.pocoo.org/docs/1.0/installation/)
+    
+   3. Postman [here](https://www.getpostman.com/apps)
 
 
 ### Quick Start
@@ -38,7 +39,7 @@ you're reading.**
   ```
   $ git clone https://github.com/Quantum-35/Ride_My_Way.git
   $ cd Ride_MY_Way/api/v1
-  $ git checkout ft-develop-signup-#158500122
+  $ git checkout develop
   ```
 ### Installation and Usage
 #### First
@@ -102,12 +103,6 @@ following response will be returned.
     "message": "Failed, User already exists, Please sign In",
     "status": "failed"
 }
-```
-
-### Running tests without coverage
-You can now run the tests from the terminal
-```
-python manage.py test
 ```
 
 ### Running tests with coverage
