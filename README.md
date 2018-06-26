@@ -35,12 +35,15 @@ You can get the link to download Latest version the above here:
 ### Quick Start
 **Be sure to use the same version of the code as the version of the docs
 you're reading.**
+
 1. Clone the repo
   ```
   $ git clone https://github.com/Quantum-35/Ride_My_Way.git
   $ cd Ride_MY_Way/api/v1
   $ git checkout develop
   ```
+```Note``` There are two version cd into v1 for non-persisting data and v2 for persisting data
+
 ### Installation and Usage
 #### First
 Create a virtualenv and activate it::
