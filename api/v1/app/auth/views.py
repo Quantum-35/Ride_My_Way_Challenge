@@ -15,7 +15,9 @@ from app.auth.helper import (email_validator,
 
 auth = Blueprint('auth', __name__)
 
-
+'''
+Route for Registering new users and throws valid error if the user exists
+'''
 @auth.route('/register', methods=['GET', 'POST'])
 def user_auth():
     if request.method == 'POST':
@@ -63,7 +65,9 @@ def user_auth():
     return jsonify({'message': 'please Register',
                     'status': 'ok'})
 
-
+'''
+Route for logging in the user and if the user does not exist a correct error is thrown
+'''
 @auth.route('/login', methods=['GET', 'POST'])
 def handle_login():
     if request.method == 'POST':
@@ -98,7 +102,9 @@ def handle_login():
         'message': 'Please Login if already have an account',
         'status': 'success'})
 
-
+'''
+Route for logging out the user and blacklisting their tokens
+'''
 @auth.route('/logout', methods=['POST'])
 @token_required
 def handle_logout(current_user):

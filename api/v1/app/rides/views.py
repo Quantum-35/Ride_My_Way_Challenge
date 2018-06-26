@@ -6,7 +6,9 @@ from app.auth.helper import token_required
 
 rides = Blueprint('rides', __name__)
 
-
+'''
+Route for user viewing all available rides with all relevant details
+'''
 @rides.route('/rides/', methods=['GET', 'POST'])
 @token_required
 def handle_rides(curr_user):
@@ -29,7 +31,9 @@ def handle_rides(curr_user):
             'status': 'ok'
         }), 200
 
-
+'''
+Route wher users can access a single ride id from the available ones
+'''
 @rides.route('/rides/<int:ride_id>', methods=['GET'])
 @token_required
 def handle_singleroute(curr_user, ride_id):
@@ -49,7 +53,9 @@ def handle_singleroute(curr_user, ride_id):
             'message': 'Ride with that id Does not exist',
             'status': 'Failed'}), 404
 
-
+'''
+Route for users making request to existing rides
+'''
 @rides.route('/rides/<int:ride_id>/requests', methods=['POST'])
 @token_required
 def handle_join(curr_user, ride_id):

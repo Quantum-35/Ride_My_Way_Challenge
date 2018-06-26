@@ -5,6 +5,10 @@ from flask import current_app
 
 
 class User():
+    '''
+    This Class Stores all the user Data in the db_Users list 
+    '''
+
     primary_key = 0
     db_users = []
 
@@ -76,6 +80,10 @@ class User():
 
 
 class BlackListToken:
+    '''
+    This Class stores tokens that are no longer valid.Every time a user logs out user 
+    validation Token is stores in this class
+    '''
 
     id = 0
     token_db = []
@@ -100,6 +108,9 @@ class BlackListToken:
 
 
 class Rides:
+    '''
+    Stores User Rides that can be easily retived or stored
+    '''
     db_rides = []
     db_request = []
     ride_id = 1
