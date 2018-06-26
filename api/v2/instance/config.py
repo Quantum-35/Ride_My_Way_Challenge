@@ -22,7 +22,6 @@ class DevelopmentConfig(BaseConfig):
     BCRYPT_HASH_PREFIX = 4
     AUTH_TOKEN_EXPIRY_DAYS = 1
     AUTH_TOKEN_EXPIRY_SECONDS = 20
-    conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
 
 
 class TestingConfig(BaseConfig):
@@ -35,7 +34,6 @@ class TestingConfig(BaseConfig):
     AUTH_TOKEN_EXPIRY_DAYS = 0
     AUTH_TOKEN_EXPIRY_SECONDS = 3
     AUTH_TOKEN_EXPIRATION_TIME_DURING_TESTS = 5
-    conn  = psycopg2.connect(host="localhost",database="test_andela", user="postgres", password="leah")
 
 
 class ProductionConfig(BaseConfig):
