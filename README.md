@@ -24,12 +24,12 @@ You need to have the Following before getting Started
 3. Postman
 ```
 You can get the link to download Latest version the above here:
-    1.Python [here](https://www.python.org/downloads/)
+
+   1.Python [here](https://www.python.org/downloads/)
     
    2.Flask [here](http://flask.pocoo.org/docs/1.0/installation/)
     
    3. Postman [here](https://www.getpostman.com/apps)
-
 
 ## Usage
 - [quick start](#Quick-Start)
