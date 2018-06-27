@@ -11,7 +11,7 @@ class TestHelper(unittest.TestCase):
     def test_wether_email_is_valid(self):
         self.assertTrue(email_validator('quantum@gmail.com'))
 
-    def test_wether_address_is_valid(self):
+    def test_whether_address_is_valid(self):
         self.assertTrue(address_validator('123 Kitale'))
 
     def test_password_is_valid(self):
