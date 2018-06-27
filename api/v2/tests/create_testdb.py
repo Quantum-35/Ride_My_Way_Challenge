@@ -1,12 +1,17 @@
 import psycopg2
 
+from app.app import create_app
+
 '''
 This module creates tables for all the users and rides
 '''
 
 def create_tables():
     # Connection to the database
-    conn  = psycopg2.connect(host="localhost",database="test_andela", user="postgres", password="leah")
+    # if create_app('development'):
+    #     conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+    # else:
+    conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
     curs = conn.cursor()
 
     tbl_users = (

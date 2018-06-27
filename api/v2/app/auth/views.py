@@ -48,7 +48,7 @@ def user_auth():
                 'status': 'failed'}), 400
 
         if current_app.config['TESTING']:
-            conn  = psycopg2.connect(host="localhost",database="test_andela", user="postgres", password="leah")
+            conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
         else:
             conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
         curs = conn.cursor()

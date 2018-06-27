@@ -16,12 +16,12 @@ class BaseTests (unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()
-        self.conn  = psycopg2.connect(host="localhost",database="test_andela", user="postgres", password="leah")
+        self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
         create_tables()
         print('0000000',self.conn)
         self.test_user = {
                     "username": "quantum",
-                    "email": "quanrum@gma.com",
+                    "email": "mike@gma.com",
                     "address": "3343312",
                     "password": "12345678",
                     "confirm_password": "12345678"}

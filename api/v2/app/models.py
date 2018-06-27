@@ -19,11 +19,11 @@ class User:
         self.address = address
         self.password = generate_password_hash(password)
         if current_app.config['TESTING']:
-            self.conn  = psycopg2.connect(host="localhost",database="test_andela", user="postgres", password="leah")
-            print('@@@@@@@@@@@@@@@','TEST')
+            self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+            
         else:
             self.conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
-            print('@@@@@@@@@@@@@@@','Not TEST')
+            
     
     def register_user(self):
         create_tables()

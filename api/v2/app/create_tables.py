@@ -11,7 +11,7 @@ def create_tables():
     if create_app('development'):
         conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
     else:
-        conn  = psycopg2.connect(host="localhost",database="test_andela", user="postgres", password="leah")
+        conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
     curs = conn.cursor()
 
     tbl_users = (
