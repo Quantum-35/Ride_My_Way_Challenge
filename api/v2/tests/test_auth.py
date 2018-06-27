@@ -85,3 +85,55 @@ class TestUserAuth(BaseTests):
         self.assertTrue(response.status_code == 403)
         expected = {'message': 'User with that email exists'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    def test_user_send_get_login(self):
+        response = self.client.get(SIGNIN_URL,
+                                    content_type='application/json')
+        self.assertTrue(response.status_code == 200)
+        expected = {'message': 'Please Login if already have an account'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    def test_user_login_with_wrong_email_format(self):
+        response = self.client.post(SIGNIN_URL,
+                                    data=json.dumps({
+                                       "email": "quangmailcom",
+                                       "password": 'Quanajajsajssajs'}),
+                                    content_type='application/json')
+        self.assertTrue(response.status_code == 400)
+        expected = {'message': 'Wrong email format'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    def test_user_login_with_invalid_valid_credantials(self):
+        self.register_user()
+        response = self.client.post(SIGNIN_URL,
+                                    data=json.dumps({
+                                       "email": "Quant@gma.com",
+                                       "password": '12345678'}),
+                                    content_type='application/json')
+        print(response.data)
+        self.assertTrue(response.status_code == 401)
+        expected = {'message': 'Wrong username or password'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    def test_user_login_with_invalid_wrong_password(self):
+        self.register_user()
+        response = self.client.post(SIGNIN_URL,
+                                    data=json.dumps({
+                                       "email": "Quan@gma.com",
+                                       "password": 'wrongpassword'}),
+                                    content_type='application/json')
+        print(response.data)
+        self.assertTrue(response.status_code == 401)
+        expected = {'message': 'Wrong username or password'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    def test_user_login_with_valid_credantials(self):
+        self.register_user()
+        response = self.client.post(SIGNIN_URL,
+                                    data=json.dumps({
+                                       "email": "mike@gma.com",
+                                       "password": '12345678'}),
+                                    content_type='application/json')
+        self.assertTrue(response.status_code == 200)
+        expected = {'message': 'Logged in successfully'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])

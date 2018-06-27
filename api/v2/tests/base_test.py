@@ -18,7 +18,6 @@ class BaseTests (unittest.TestCase):
         self.client = self.app.test_client()
         self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
         create_tables()
-        print('0000000',self.conn)
         self.test_user = {
                     "username": "quantum",
                     "email": "mike@gma.com",

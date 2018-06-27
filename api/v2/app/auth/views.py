@@ -69,3 +69,49 @@ def user_auth():
 
     return jsonify({'message': 'please Register',
                     'status': 'ok'})
+
+              
+'''
+Route for logging in the user and if the user does not exist a correct error is thrown
+'''
+@auth.route('/login', methods=['GET', 'POST'])
+def handle_login():
+    if request.method == 'POST':
+        payload = request.get_json()
+        email = payload['email']
+        password = payload['password']
+        if not email_validator(email):
+            return jsonify({
+                'message': 'Wrong email format',
+                'status': 'failed'
+            }), 400
+        if current_app.config['TESTING']:
+            conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+        else:
+            conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        curs = conn.cursor()
+        query = 'SELECT * FROM users WHERE email=%s'
+        curs.execute(query, (email,))
+        row = curs.fetchone()
+        if row:
+            user_pass = row[4]
+            print(user_pass)
+            if check_password_hash(user_pass, password):
+                eml = row[2]
+                token = User.encode_auth_token(user_email=eml).decode('utf-8')
+                return jsonify({
+                    'message': 'Logged in successfully',
+                    'status': 'ok',
+                    'token': token
+                })
+            else:
+                return jsonify({
+                    'message': 'Wrong username or password',
+                    'status': 'failed'}), 401
+        else:
+            return jsonify({
+                    'message': 'Wrong username or password',
+                    'status': 'failed'}), 401
+    return jsonify({
+        'message': 'Please Login if already have an account',
+        'status': 'success'})

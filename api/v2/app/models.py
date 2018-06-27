@@ -1,4 +1,6 @@
 import psycopg2
+import datetime
+import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.create_tables import create_tables
@@ -50,3 +52,23 @@ class User:
         else:
             user = None
         return user
+
+    @staticmethod
+    def encode_auth_token(user_email):
+
+        try:
+            payload = {
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(
+                        days=current_app.config.get('AUTH_TOKEN_EXPIRY_DAYS'),
+                        seconds=current_app.config.get(
+                        'AUTH_TOKEN_EXPIRY_SECONDS')),
+                'iat': datetime.datetime.utcnow(),
+                'sub': user_email
+            }
+            return jwt.encode(
+                payload,
+                current_app.config['SECRET_KEY'],
+                algorithm='HS256'
+            )
+        except Exception as e:
+            return e
