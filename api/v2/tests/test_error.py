@@ -1,33 +1,16 @@
-from flask import Blueprint, jsonify
-
-errors = Blueprint('errors', __name__)
-
-
-@errors.app_errorhandler(404)
-def route_not_found(e):
-    """
-    Return a custom 404 Http response message for missing or not found routes.
-    """
-    return jsonify({
-        'message': 'Endpoint not found',
-        'status': 'Failed'}), 404
+import json
+from tests.base_test import BaseTests
 
 
-@errors.app_errorhandler(405)
-def method_not_found(e):
-    """
-    Custom response for methods not allowed for the requested URLs
-    """
-    return jsonify({
-        'message': 'The method is not allowed for the requested URL',
-        'status': 'Failed'}), 405
+class TestAppErrors(BaseTests):
 
+    def test_404_error(self):
+        response = self.client.get('/Deoes_nt_exist',
+                                   content_type='application/json')
+        self.assertTrue(response.status_code == 404)
 
-@errors.app_errorhandler(500)
-def internal_server_error(e):
-    """
-    Return a custom message for a 500 internal error
-    """
-    return jsonify({
-        'message': 'Internal server error',
-        'status': 'Failed'}), 500
+    def test_405_error(self):
+        response = self.client.put('/api/v2/auth/register',
+                                   data=json.dumps(self.test_user),
+                                   content_type='application/json')
+        self.assertTrue(response.status_code == 405)

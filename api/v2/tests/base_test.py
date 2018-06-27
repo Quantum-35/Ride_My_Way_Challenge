@@ -27,10 +27,8 @@ class BaseTests (unittest.TestCase):
                     "confirm_password": "12345678"}
     def tearDown(self):
         curs = self.conn.cursor()
-        print('**********',curs)
         curs.execute('select * from users')
         row=curs.fetchone()
-        print('555555555555555555555555555555555',row)
         curs.execute("DROP TABLE users")
         self.conn.commit()
         print(row)
