@@ -1,7 +1,8 @@
 import re
+import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, current_app
 
 from app.models import User
 
@@ -57,7 +58,15 @@ def token_required(f):
 
         try:
             decode_response = User.decode_auth_token(token)
-            current_user = User.get_by_email(email=decode_response)
+            if current_app.config['TESTING']:
+                conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+            else:
+                conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+            curs = conn.cursor()
+            print(decode_response)
+            query = 'SELECT * FROM users WHERE email=%s'
+            curs.execute(query, (decode_response,))
+            current_user = curs.fetchone()
         except:
             message = 'Invalid token'
             if isinstance(decode_response, str):

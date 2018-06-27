@@ -119,7 +119,7 @@ class TestUserAuth(BaseTests):
         self.register_user()
         response = self.client.post(SIGNIN_URL,
                                     data=json.dumps({
-                                       "email": "Quan@gma.com",
+                                       "email": "mike@gma.com",
                                        "password": 'wrongpassword'}),
                                     content_type='application/json')
         print(response.data)
@@ -137,3 +137,5 @@ class TestUserAuth(BaseTests):
         self.assertTrue(response.status_code == 200)
         expected = {'message': 'Logged in successfully'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    

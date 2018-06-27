@@ -35,23 +35,6 @@ class User:
         self.conn.commit()
         self.conn.close()
 
-    
-    def find_user_by_email(self, email):
-        '''
-        Fuction that finds user from the database by email
-        '''
-        create_tables()
-        curs = self.conn.cursor()
-        query = "SELECT * FROM users WHERE email = %s"
-        curs.execute(query, (email,))
-        row = curs.fetchone()
-        # if the user with that email exists
-        if row:
-            # if the data exists we create a user object with data from that row can be User(row[0], row[1], row[2], row[3])
-            user = User(row[0], row[1], row[2], row[3])
-        else:
-            user = None
-        return user
 
     @staticmethod
     def encode_auth_token(user_email):
@@ -72,3 +55,19 @@ class User:
             )
         except Exception as e:
             return e
+
+    @staticmethod
+    def decode_auth_token(token):
+        try:
+            payload = jwt.decode(
+                token,
+                current_app.config['SECRET_KEY'],
+                algorithms='HS256')
+            return payload['sub']
+        except jwt.ExpiredSignatureError:
+            return 'Signature expired, Please sign in again'
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please sign in again'
+
+
+
