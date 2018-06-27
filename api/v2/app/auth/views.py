@@ -95,7 +95,6 @@ def handle_login():
         row = curs.fetchone()
         if row:
             user_pass = row[4]
-            print(user_pass)
             if check_password_hash(user_pass, password):
                 eml = row[2]
                 token = User.encode_auth_token(user_email=eml).decode('utf-8')

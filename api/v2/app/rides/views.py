@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify
+import psycopg2
+from flask import Blueprint, request, jsonify, current_app
 
 from app.auth.helpers import token_required
 
@@ -23,7 +24,15 @@ def handle_rides(current_user):
         return jsonify({'message': 'Ride Successfully Created',
                         'status': 'ok'}), 201
     else:
+        if current_app.config['TESTING']:
+            conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+        else:
+            conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        curs = conn.cursor()
+        query = 'SELECT * FROM ride'
+        curs.execute(query)
+        row = curs.fetchall()
         return jsonify({
-            'message': 'Rides.db_rides',
+            'result': row,
             'status': 'ok'
         }), 200
