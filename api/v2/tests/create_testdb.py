@@ -7,10 +7,6 @@ This module creates tables for all the users and rides
 '''
 
 def create_tables():
-    # Connection to the database
-    # if create_app('development'):
-    #     conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
-    # else:
     conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
     curs = conn.cursor()
 
@@ -24,6 +20,29 @@ def create_tables():
                 password VARCHAR(100) NOT NULL)
         """)
     curs.execute(tbl_users)
+
+    conn.commit()
+    return 'Success'
+
+def create_rides():
+    # Connection to the database
+    conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+    curs = conn.cursor()
+
+    tbl_rides = (
+        """
+        CREATE TABLE IF NOT EXISTS ride (
+                ride_id SERIAL PRIMARY KEY,
+                user_id INTEGER 
+                REFERENCES users (id)
+                ON UPDATE CASCADE ON DELETE CASCADE,
+                origin VARCHAR(30),
+                destination VARCHAR(30),
+                car_model VARCHAR(50),
+                driver_name VARCHAR(50),
+                depature VARCHAR(30))
+        """)
+    curs.execute(tbl_rides)
 
     conn.commit()
     return 'Success'
