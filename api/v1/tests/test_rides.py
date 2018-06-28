@@ -23,7 +23,7 @@ class TestRides(BaseTests):
         response = self.register_user()
         self.assertTrue(response.status_code == 201)
         response = self.login_user()
-        self.assertTrue(response.status_code == 200)
+        self.assertTrue(response.status_code == 200) 
         access_token = json.loads(response.data)['token']
         headers = dict(Authorization='Bearer {}'.format(access_token))
         response = self.client.post('/api/v1/rides/',
