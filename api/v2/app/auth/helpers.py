@@ -47,7 +47,7 @@ def token_required(f):
             except IndexError:
                 return make_response(jsonify({
                     'status': 'failed',
-                    'message': 'Provide a valid auth token'
+                    'message': 'Provide a valiid auth token'
                 })), 403
 
         if not token:

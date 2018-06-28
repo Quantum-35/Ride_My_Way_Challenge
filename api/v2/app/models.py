@@ -93,12 +93,14 @@ class Rides:
 
 class Requests:
     
-    def __init__(self, user_id,ride_id, pickup, destination, pickuptime):
+    accepted = 'False'
+    def __init__(self, user_id,ride_id, pickup, destination, pickuptime, accepted='false'):
         self.user_id = user_id
         self.ride_id = ride_id
         self.pickup = pickup
         self.destination = destination
         self.pickuptime = pickuptime
+        self.accepted = accepted
         if current_app.config['TESTING']:
             self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
             
@@ -108,7 +110,7 @@ class Requests:
     def save_request(self):
         create_requests()
         curs = self.conn.cursor()
-        query = 'INSERT INTO requests(user_id, ride_id, pickup, destination, pickuptime) VALUES(%s, %s, %s, %s, %s)'
-        curs.execute(query, (self.user_id, self.ride_id, self.pickup, self.destination, self.pickuptime))
+        query = 'INSERT INTO requests(user_id, ride_id, pickup, destination, pickuptime, accepted) VALUES(%s, %s, %s, %s, %s, %s)'
+        curs.execute(query, (self.user_id, self.ride_id, self.pickup, self.destination, self.pickuptime, self.accepted))
         self.conn.commit()
         self.conn.close()

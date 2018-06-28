@@ -78,7 +78,8 @@ def create_requests():
                 ON UPDATE CASCADE ON DELETE CASCADE,
                 pickup VARCHAR(30),
                 destination VARCHAR(50),
-                pickuptime VARCHAR(50))
+                pickuptime VARCHAR(50),
+                accepted VARCHAR(5))
         """)
     curs.execute(tbl_requests)
 

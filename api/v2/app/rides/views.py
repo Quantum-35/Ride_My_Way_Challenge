@@ -20,6 +20,7 @@ def handle_rides(current_user):
         ride = Rides(user_id=current_user[0],origin=origin, destination=destination,
                         car_model=car_model, driver_name=driver_name,
                         depature=depature)
+        print(ride)
         ride.save_ride()
         return jsonify({'message': 'Ride Successfully Created',
                         'status': 'ok'}), 201
@@ -92,12 +93,14 @@ def handle_join(curr_user, ride_id):
             query = 'SELECT * FROM requests WHERE ride_id=%s'
             curs.execute(query, (ride_id,))
             row = curs.fetchone()
+            print(row)
             return jsonify({
                     'request id':row[0],
                     'ride_id': row[2],
                     'pickup': row[3],
                     'destination': row[4],
-                    'pickup time': row[5]})
+                    'pickup time': row[5],
+                    'accepted': row[6]})
         else:
             return jsonify({
                 'message': 'Ride with that id Does not exist',
@@ -113,3 +116,29 @@ def handle_join(curr_user, ride_id):
         row = curs.fetchall()
         return jsonify({
             'message': row})
+
+'''
+Route for accepting or rejecting ride offers
+'''
+@rides.route('/rides/<int:ride_id>/requests/<int:req_id>', methods=['PUT'])
+@token_required
+def handle_action_request(curr_user,ride_id, req_id):
+    payload = request.get_json()
+    action = payload['accepted']
+    if action == 'True' or action == 'true':
+        if current_app.config['TESTING']:
+                conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+        else:
+            conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        curs = conn.cursor()
+        query = "UPDATE requests SET accepted = %s where request_id = %s"
+        curs.execute(query, (action, req_id,))
+        conn.commit()
+        return jsonify({
+                'message': 'request successfully accepted',
+                'status': 'updated'}), 201
+    else:
+        return jsonify({
+                    'message': 'you have not accepted request',
+                    'accepted': 'False'}), 200
+    
