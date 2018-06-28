@@ -69,35 +69,47 @@ def handle_singleroute(current_user, ride_id):
 '''
 Route for users making request to existing rides
 '''
-@rides.route('/rides/<int:ride_id>/requests', methods=['POST'])
+@rides.route('/rides/<int:ride_id>/requests', methods=['GET', 'POST'])
 @token_required
 def handle_join(curr_user, ride_id):
-    payload = request.get_json()
-    pickup = payload['pickup']
-    destination = payload['destination']
-    pickuptime = payload['pickuptime']
+    if request.method == 'POST':
+        payload = request.get_json()
+        pickup = payload['pickup']
+        destination = payload['destination']
+        pickuptime = payload['pickuptime']
 
-    if current_app.config['TESTING']:
-            conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-    else:
-        conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
-    curs = conn.cursor()
-    query = 'SELECT * FROM ride WHERE ride_id=%s'
-    curs.execute(query, (ride_id,))
-    row = curs.fetchone()
-    if row:
-        ride_request = Requests(row[1], row[0], pickup, destination, pickuptime)
-        ride_request.save_request()
-        query = 'SELECT * FROM requests WHERE ride_id=%s'
+        if current_app.config['TESTING']:
+                conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+        else:
+            conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        curs = conn.cursor()
+        query = 'SELECT * FROM ride WHERE ride_id=%s'
         curs.execute(query, (ride_id,))
         row = curs.fetchone()
-        return jsonify({
-                'request id':row[0],
-                'ride_id': row[2],
-                'pickup': row[3],
-                'destination': row[4],
-                'pickup time': row[5]})
+        if row:
+            ride_request = Requests(row[1], row[0], pickup, destination, pickuptime)
+            ride_request.save_request()
+            query = 'SELECT * FROM requests WHERE ride_id=%s'
+            curs.execute(query, (ride_id,))
+            row = curs.fetchone()
+            return jsonify({
+                    'request id':row[0],
+                    'ride_id': row[2],
+                    'pickup': row[3],
+                    'destination': row[4],
+                    'pickup time': row[5]})
+        else:
+            return jsonify({
+                'message': 'Ride with that id Does not exist',
+                'status': 'failed'}), 404
     else:
+        if current_app.config['TESTING']:
+                conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+        else:
+            conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        curs = conn.cursor()
+        query = 'SELECT * FROM requests'
+        curs.execute(query)
+        row = curs.fetchall()
         return jsonify({
-            'message': 'Ride with that id Does not exist',
-            'status': 'failed'}), 404
+            'message': row})
