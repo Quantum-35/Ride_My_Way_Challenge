@@ -56,3 +56,31 @@ def create_rides():
 
     conn.commit()
     return 'Success'
+
+def create_requests():
+    # Connection to the database
+    if current_app.config['TESTING']:
+        conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+            
+    else:
+        conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+    curs = conn.cursor()
+
+    tbl_requests = (
+        """
+         CREATE TABLE IF NOT EXISTS requests (
+                request_id SERIAL PRIMARY KEY,
+                user_id INTEGER 
+                REFERENCES users (id)
+                ON UPDATE CASCADE ON DELETE CASCADE,
+                ride_id INTEGER 
+                REFERENCES ride (ride_id)
+                ON UPDATE CASCADE ON DELETE CASCADE,
+                pickup VARCHAR(30),
+                destination VARCHAR(50),
+                pickuptime VARCHAR(50))
+        """)
+    curs.execute(tbl_requests)
+
+    conn.commit()
+    return 'Success'

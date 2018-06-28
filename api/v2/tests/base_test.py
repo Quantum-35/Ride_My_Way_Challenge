@@ -3,7 +3,7 @@ import json
 import psycopg2
 
 from app.app import create_app
-from tests.create_testdb import create_tables, create_rides
+from tests.create_testdb import create_tables, create_rides, create_requests
 
 SIGNUP_URL = '/api/v2/auth/register'
 SIGNIN_URL = '/api/v2/auth/login'
@@ -19,6 +19,7 @@ class BaseTests (unittest.TestCase):
         self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
         create_tables()
         create_rides()
+        create_requests()
         self.test_user = {
                     "username": "quantum",
                     "email": "mike@gma.com",
@@ -32,12 +33,17 @@ class BaseTests (unittest.TestCase):
             "destination": "Nakuru",
             "driver_name": "quantum",
             "origin": "kitale"}
+        self.request_data = {
+            "pickup": "limuru",
+            "destination": "Nakuru",
+            "pickuptime": "2434334"}
 
     def tearDown(self):
         curs = self.conn.cursor()
         curs.execute('select * from users')
         curs.execute("DROP TABLE users CASCADE")
-        curs.execute("DROP TABLE ride ")
+        curs.execute("DROP TABLE ride CASCADE")
+        curs.execute("DROP TABLE requests ")
         self.conn.commit()
         self.conn.close()
 

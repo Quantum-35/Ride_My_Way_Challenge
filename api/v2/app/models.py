@@ -3,7 +3,7 @@ import datetime
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app.create_tables import create_tables, create_rides
+from app.create_tables import create_tables, create_rides, create_requests
 from flask import current_app
 
 
@@ -88,5 +88,27 @@ class Rides:
         curs = self.conn.cursor()
         query = 'INSERT INTO ride(user_id, origin, destination, car_model, driver_name, depature) VALUES(%s,%s, %s, %s, %s, %s)'
         curs.execute(query, (self.user_id, self.origin, self.destination, self.car_model, self.driver_name, self.depature))
+        self.conn.commit()
+        self.conn.close()
+
+class Requests:
+    
+    def __init__(self, user_id,ride_id, pickup, destination, pickuptime):
+        self.user_id = user_id
+        self.ride_id = ride_id
+        self.pickup = pickup
+        self.destination = destination
+        self.pickuptime = pickuptime
+        if current_app.config['TESTING']:
+            self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+            
+        else:
+            self.conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+            
+    def save_request(self):
+        create_requests()
+        curs = self.conn.cursor()
+        query = 'INSERT INTO requests(user_id, ride_id, pickup, destination, pickuptime) VALUES(%s, %s, %s, %s, %s)'
+        curs.execute(query, (self.user_id, self.ride_id, self.pickup, self.destination, self.pickuptime))
         self.conn.commit()
         self.conn.close()
