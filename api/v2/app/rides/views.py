@@ -36,3 +36,32 @@ def handle_rides(current_user):
             'result': row,
             'status': 'ok'
         }), 200
+
+'''
+Route wher users can access details of  single ride from the available ones
+'''
+@rides.route('/rides/<int:ride_id>', methods=['GET'])
+@token_required
+def handle_singleroute(curr_user, ride_id):
+    if current_app.config['TESTING']:
+            conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+    else:
+        conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+    curs = conn.cursor()
+    query = 'SELECT * FROM ride WHERE ride_id=%s'
+    curs.execute(query, (ride_id,))
+    row = curs.fetchone()
+    print(row)
+    if row:
+        return jsonify({
+            'ride_id': row[0],
+            'origin': row[2],
+            'destination': row[3],
+            'car_model': row[4],
+            'driver name': row[5],
+            'depature': row[6],
+            'status': 'ok'}), 200
+    else:
+        return jsonify({
+            'message': 'Ride with that id Does not exist',
+            'status': 'Failed'}), 404
