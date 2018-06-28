@@ -49,6 +49,10 @@ def user_auth():
 
         if current_app.config['TESTING']:
             conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+        elif current_app.config.get('development'):
+            conn  = psycopg2.connect(host="ec2-54-243-61-173.compute-1.amazonaws.com",
+                                    database="dc514oq5f08fub", user="fvngjyeieaepsi",
+                                    password="853c26122a273497d2505f95979781ad83d1e6a58b114e0dc53145d38bee4363")
         else:
             conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
         curs = conn.cursor()
