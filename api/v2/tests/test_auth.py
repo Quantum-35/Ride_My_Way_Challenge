@@ -138,4 +138,13 @@ class TestUserAuth(BaseTests):
         expected = {'message': 'Logged in successfully'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
+    def test_user_tries_to_access_route_without_token(self):
+        response = self.client.get('/api/v2/rides',
+                                    content_type='application/json')
+        self.assertTrue(response.status_code == 400)
+        expected = {'message': 'Ensure you have logged in and received a valid token'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+    
+
     

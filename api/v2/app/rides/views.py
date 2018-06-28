@@ -20,7 +20,6 @@ def handle_rides(current_user):
         ride = Rides(user_id=current_user[0],origin=origin, destination=destination,
                         car_model=car_model, driver_name=driver_name,
                         depature=depature)
-        print(ride)
         ride.save_ride()
         return jsonify({'message': 'Ride Successfully Created',
                         'status': 'ok'}), 201
