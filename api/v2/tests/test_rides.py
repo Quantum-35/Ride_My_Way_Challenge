@@ -56,8 +56,14 @@ class TestRides(BaseTests):
         response = self.client.get('/api/v2/rides/1/requests',
                                     content_type='application/json',
                                     headers=headers)
-        print(response.data)
         self.assertTrue(response.status_code == 200)
+
+        #Test for user accepting ride request or rejecting
+        response = self.client.post('/api/v2/rides/1/requests/1',
+                                    data=json.dumps(self.request_data),
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 201)
 
     def test_user_can_get_all_available_rides(self):
         response = self.register_user()
