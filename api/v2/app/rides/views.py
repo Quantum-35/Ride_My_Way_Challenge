@@ -51,7 +51,6 @@ def handle_singleroute(curr_user, ride_id):
     query = 'SELECT * FROM ride WHERE ride_id=%s'
     curs.execute(query, (ride_id,))
     row = curs.fetchone()
-    print(row)
     if row:
         return jsonify({
             'ride_id': row[0],

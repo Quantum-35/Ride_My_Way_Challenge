@@ -21,13 +21,27 @@ class TestRides(BaseTests):
         self.assertTrue(response.status_code == 201)
         expected = {'message': 'Ride Successfully Created'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
+        # Test for user getting details of a single ride
         response = self.client.get('/api/v2/rides/1',
                                    content_type='application/json',
                                    headers=headers)
         self.assertTrue(response.status_code == 200)
+        # Test for user trying to get details of ride that doesent exist
         response = self.client.get('/api/v2/rides/10000000000001',
                                    content_type='application/json',
                                    headers=headers)
+        self.assertTrue(response.status_code == 404)
+        expected = {'message': 'Ride with that id Does not exist'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+        # Test for user making request to ride that exists
+        response = self.client.get('/api/v2/rides/1/requests',
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 200)
+        # Test for user trying to make request to ride that does not exist
+        response = self.client.get('/api/v2/rides/1000000000000/requests',
+                                    content_type='application/json',
+                                    headers=headers)
         self.assertTrue(response.status_code == 404)
         expected = {'message': 'Ride with that id Does not exist'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
