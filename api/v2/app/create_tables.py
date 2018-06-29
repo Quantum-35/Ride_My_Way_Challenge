@@ -10,11 +10,13 @@ This module creates tables for all the users and rides
 def create_tables():
     # Connection to the database
     if current_app.config['TESTING']:
-        conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")    
+        conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+    elif current_app.config['ENV']=='production':
+        conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
     else:
         conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
     curs = conn.cursor()
-
     tbl_users = (
         """
         CREATE TABLE IF NOT EXISTS users (
