@@ -32,10 +32,19 @@ def handle_rides(current_user):
         query = 'SELECT * FROM ride'
         curs.execute(query)
         row = curs.fetchall()
-        return jsonify({
-            'result': row,
-            'status': 'ok'
-        }), 200
+        c = []
+        for u in row:
+            work= {
+            'ride id': u[0],
+            'user id': u[1],
+            'origin': u[2],
+            'destination': u[3],
+            'car model': u[4],
+            'driver name': u[5],
+            'depature': u[6],
+            'status': 'ok'}
+            c.append(work)
+        return jsonify(c)
 
 '''
 Route wher users can access details of  single ride from the available ones
@@ -92,7 +101,6 @@ def handle_join(curr_user, ride_id):
             query = 'SELECT * FROM requests WHERE ride_id=%s'
             curs.execute(query, (ride_id,))
             row = curs.fetchone()
-            print(row)
             return jsonify({
                     'request id':row[0],
                     'ride_id': row[2],
@@ -113,8 +121,19 @@ def handle_join(curr_user, ride_id):
         query = 'SELECT * FROM requests'
         curs.execute(query)
         row = curs.fetchall()
-        return jsonify({
-            'message': row})
+        c = []
+        print(row)
+        for u in row:
+            work = {
+                'request id': u[0],
+                'ride id': u[2],
+                'pickup Location': u[3],
+                'destination': u[4],
+                'pickup time': u[5],
+                'accepted': u[6],
+            }
+            c.append(work)
+        return jsonify(c)
 
 '''
 Route for accepting or rejecting ride offers
