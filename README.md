@@ -6,7 +6,8 @@
 Ride-my App is a carpooling application that provides drivers with the ability to create ride offers
 and passengers to join available ride offers.
 
-You can get the live version in heroku of the backend [here](https://andela-challenge2-ride-with-me.herokuapp.com)
+You can get the live version of challenge 2 in heroku of the backend [here](https://andela-challenge2-ride-with-me.herokuapp.com)
+You can get the live version of challenge 3 in heroku of the backend [here](https://andela-challenge2-ride-with-me.herokuapp.com)
 #### To use it 
 ```
 1.Ensure you have postman installed in your system
@@ -70,7 +71,9 @@ Navigate to [http://localhost:5000](http://localhost:5000)
 
 ### User registration.
 Send a `POST` request to `/api/v1/auth/register` endpoint with the payload in
-`Json`
+`Json` for the non persisting data
+Send a `POST` request to `/api/v2/auth/register` endpoint with the payload in
+`Json` for the  persisting data
 
 An example would be
 ```
