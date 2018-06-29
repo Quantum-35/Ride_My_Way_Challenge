@@ -14,7 +14,7 @@ class TestRides(BaseTests):
         self.assertTrue(response.status_code == 200)
         access_token = json.loads(response.data)['token']
         headers = dict(Authorization='Bearer {}'.format(access_token))
-        response = self.client.post(RIDES_URL,
+        response = self.client.post('/api/v2/users/rides',
                                     data=json.dumps(self.test_ride_data),
                                     content_type='application/json',
                                     headers=headers)
@@ -53,7 +53,7 @@ class TestRides(BaseTests):
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
         # Test for user fetching all requests to a ride offer
-        response = self.client.get('/api/v2/rides/1/requests',
+        response = self.client.get('/api/v2/users/rides/4/requests',
                                     content_type='application/json',
                                     headers=headers)
         self.assertTrue(response.status_code == 200)
