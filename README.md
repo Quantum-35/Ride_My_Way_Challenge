@@ -1,13 +1,13 @@
 # Ride My Way Challenge 3
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2.svg?branch=ft-develop-ch3-signup-%23158626501)](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2)
-[![Coverage Status](https://coveralls.io/repos/github/Quantum-35/Ride_My_Way_Challenge2/badge.svg?branch=ft-develop-chr3-create-rideoffer-%23158626777)](https://coveralls.io/github/Quantum-35/Ride_My_Way_Challenge2?branch=ft-develop-chr3-create-rideoffer-%23158626777)
+[![Coverage Status](https://coveralls.io/repos/github/Quantum-35/Ride_My_Way_Challenge2/badge.svg?branch=fix-bugs)](https://coveralls.io/github/Quantum-35/Ride_My_Way_Challenge2?branch=fix-bugs)
 
 Ride-my App is a carpooling application that provides drivers with the ability to create ride offers
 and passengers to join available ride offers.
 
 You can get the live version of challenge 2 in heroku of the backend [here](https://andela-challenge2-ride-with-me.herokuapp.com)
-You can get the live version of challenge 3 in heroku of the backend [here](https://andela-challenge2-ride-with-me.herokuapp.com)
+You can get the live version of challenge 3 in heroku of the backend [here](https://fix-bugs.herokuapp.com)
 #### To use it 
 ```
 1.Ensure you have postman installed in your system
