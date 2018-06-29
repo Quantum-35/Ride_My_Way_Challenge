@@ -40,6 +40,7 @@ class ProductionConfig(BaseConfig):
     """
     Production application configuration
     """
+    PRODUCTION = True
     DEBUG = True
     BCRYPT_HASH_PREFIX = 13
     AUTH_TOKEN_EXPIRY_DAYS = 30
