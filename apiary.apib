@@ -1,0 +1,174 @@
+FORMAT: 1A
+HOST: https://fix-bugs.herokuapp.com
+
+# Ride my way 
+
+Ride-my App is a carpooling application that provides drivers with the ability to create ride offers
+and passengers to join available ride offers
+
+The Features attached include:
+* User Authentication
+* Making new Ride offers
+* Viewing all available ride offers
+* Fetching a single ride offer and viewing its details
+* Making request to a ride offer 
+* Fetching all available ride offer requests
+* Accepting or Rejecting ride offer request
+
+## Register [/api/v2/auth/register]
+
+This is where un registered users signup and appropriate message is displayed incase 
+of any error
+### Register User [POST]
+
++ Request (application/json)
+
+        {
+            "username":"example",
+            "email": "example@example.com",
+            "address": "3343312",
+            "password": "<SixCharPass",
+            "confirm_password": "<SixCharPass"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "message": "Registered Successfully",
+            "status": "ok"
+        }
+
+## Login [/api/v2/auth/login]
+Registered users can login and token is automatically generated with access privileges
+to rides route
+
+### Login User [POST]
+
++ Request (application/json)
+
+        {
+            "email": "example@example.com",
+            "password": "<SixCharPass"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "message": "Logged in Successfully",
+            "status": "ok"
+        }
+        
+## Group Resources Ride
+        
+### Rides Resources [/api/v2/rides]
+
+### Post Rides [POST]
+Create a ride offer
+
++ Request (application/json)
+
+        {
+            "car_model": "Tesla",
+            "depature": "3343",
+            "destination": "Limuru",
+            "driver_name": "quantum",
+            "origin": "kitale"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "message": "Ride Successfully Created",
+            "status": "ok"
+        }
+        
+### Get All Rides [GET]
+Fetches all available ride offers
+
++ Response 200 (application/json)
+
+        {
+            "car model": "Mitsubishi",
+            "depature": "3343",
+            "destination": "Limuru",
+            "driver name": "quantum",
+            "origin": "kitale",
+            "ride id": 1,
+            "status": "ok",
+            "user id": 3
+        }
+
+
+### Get Details of Single Ride [/api/v2/rides/<int:ride_id>]
+
+### Get single ride [GET]
+    
++ Response 200 (application/json)
+
+        {
+           "car model": "Mitsubishi",
+            "depature": "3343",
+            "destination": "Limuru",
+            "driver name": "quantum",
+            "origin": "kitale",
+            "ride id": 1,
+            "status": "ok",
+            "user id": 3 
+        }
+        
+## Group Resources Request
+        
+### Make a Ride Request  [/api/v2/rides/<int:ride_id>/requests]
+
+### Post Request to ride [POST]
+Make a request to a  ride offer
+
++ Request (application/json)
+
+        {
+            "pickup": "limuru",
+            "destination": "Nakuru",
+            "pickuptime": "2434334"
+        }
+
++ Response 201 (application/json)
+
+            {
+                "accepted": "True",
+                "destination": "Nakuru",
+                "pickup": "limuru",
+                "pickup time": "2434334",
+                "request id": 1,
+                "ride_id": 2
+            }
+
+### Get all Ride requests[GET]
+Gets all Ride request
+
++ Response 201 (application/json)
+
+            {
+                "accepted": "True",
+                "destination": "Nakuru",
+                "pickup": "limuru",
+                "pickup time": "2434334",
+                "request id": 1,
+                "ride_id": 2
+            }
+            
+### Make a Ride Request  [/api/v2/rides/<int:ride_id>/requests/<int:request_id>]
+### Accept or Reject Request to ride [PUT]
+Accept or reject ride request
+
++ Request (application/json)
+
+        {
+            "accepted":"True"
+        }
+
++ Response 201 (application/json)
+
+            {
+               "message": "request successfully accepted",
+                "status": "updated"
+            }
