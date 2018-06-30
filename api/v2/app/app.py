@@ -15,5 +15,7 @@ def create_app(config_name):
     app.register_blueprint(rides, url_prefix=URL_PREFIX)
     from app.errors import errors
     app.register_blueprint(errors)
+    from app.main import main
+    app.register_blueprint(main)
 
     return app
