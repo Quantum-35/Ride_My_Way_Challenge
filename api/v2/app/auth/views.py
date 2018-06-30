@@ -6,6 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 # local import
 from app.models import User
+from app.create_tables import create_tables
 from app.auth.helpers import (email_validator,
                              address_validator,
                              password_validator,
@@ -46,14 +47,14 @@ def user_auth():
             return jsonify({
                 'message': 'short password.Enter atleast 6 characters',
                 'status': 'failed'}), 400
-
+        create_tables()
         if current_app.config['TESTING']:
             conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-        elif current_app.config['ENV']=='production':
+        else :
             conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
                                 database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
-        else:
-            conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        # else:
+        #     conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
         curs = conn.cursor()
         query = 'SELECT * FROM users WHERE email=%s'
         curs.execute(query, (email,))
@@ -62,8 +63,6 @@ def user_auth():
             new_user = User(username, email, address, password)
             new_user.register_user()
             conn.close()
-            print(current_app)
-            print(current_app.config)
             return jsonify({
                 'message': 'Signed up successfully',
                 'status': 'ok'}), 201
@@ -92,8 +91,9 @@ def handle_login():
             }), 400
         if current_app.config['TESTING']:
             conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-        else:
-            conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
         curs = conn.cursor()
         query = 'SELECT * FROM users WHERE email=%s'
         curs.execute(query, (email,))

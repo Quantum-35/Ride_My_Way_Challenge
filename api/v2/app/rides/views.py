@@ -12,8 +12,9 @@ rides = Blueprint('rides', __name__)
 def handle_rides(current_user):
     if current_app.config['TESTING']:
         conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-    else:
-        conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+    else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
     curs = conn.cursor()
     query = 'SELECT * FROM ride'
     curs.execute(query)
@@ -60,7 +61,8 @@ def handle_singleroute(current_user, ride_id):
     if current_app.config['TESTING']:
             conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
     else:
-        conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+         conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
     curs = conn.cursor()
     query = 'SELECT * FROM ride WHERE ride_id=%s'
     curs.execute(query, (ride_id,))
@@ -93,8 +95,9 @@ def handle_join(curr_user, ride_id):
 
     if current_app.config['TESTING']:
             conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-    else:
-        conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+    else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
     curs = conn.cursor()
     query = 'SELECT * FROM ride WHERE ride_id=%s'
     curs.execute(query, (ride_id,))
@@ -123,9 +126,10 @@ Route for user fetching all the ride requests
 @token_required
 def handle_fetch_ride_requests(curr_user, ride_id):
     if current_app.config['TESTING']:
-                conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-    else:
-        conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+            conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+    else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
     curs = conn.cursor()
     query = 'SELECT * FROM requests'
     curs.execute(query)
@@ -153,9 +157,10 @@ def handle_action_request(curr_user,ride_id, req_id):
     action = payload['accepted']
     if action == 'True' or action == 'true':
         if current_app.config['TESTING']:
-                conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-        else:
-            conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+            conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+        else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
         curs = conn.cursor()
         query = "UPDATE requests SET accepted = %s where request_id = %s"
         curs.execute(query, (action, req_id,))

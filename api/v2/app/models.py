@@ -19,9 +19,11 @@ class User:
         self.password = generate_password_hash(password)
         if current_app.config['TESTING']:
             self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-            
-        else:
-            self.conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        else :
+            self.conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")    
+        # else:
+        #     self.conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
             
     
     def register_user(self):
@@ -80,8 +82,9 @@ class Rides:
         if current_app.config['TESTING']:
             self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
             
-        else:
-            self.conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        else :
+            self.conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
             
     def save_ride(self):
         create_rides()
@@ -104,8 +107,9 @@ class Requests:
         if current_app.config['TESTING']:
             self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
             
-        else:
-            self.conn  = psycopg2.connect(host="localhost",database="andela", user="postgres", password="leah")
+        else :
+            self.conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
             
     def save_request(self):
         create_requests()
