@@ -65,6 +65,12 @@ to rides route
 ### Post Rides [POST]
 Create a ride offer
 
+
++ Request
+    + Headers
+
+            Authorization: Bearer ABCDEF
+
 + Request (application/json)
 
         {
@@ -85,6 +91,11 @@ Create a ride offer
 ### Get All Rides [GET]
 Fetches all available ride offers
 
++ Request
+    + Headers
+
+            Authorization: Bearer ABCDEF
+
 + Response 200 (application/json)
 
         {
@@ -99,10 +110,19 @@ Fetches all available ride offers
         }
 
 
-### Get Details of Single Ride [/api/v2/rides/<int:ride_id>]
+### Get Details of Single Ride [/api/v2/rides/{ride_id}]
 
 ### Get single ride [GET]
+
++ Request
+    + Headers
+
+            Authorization: Bearer ABCDEF
     
++ Parameters
+
+    + ride_id (number) - Ride id should be an integer
+
 + Response 200 (application/json)
 
         {
@@ -122,6 +142,11 @@ Fetches all available ride offers
 
 ### Post Request to ride [POST]
 Make a request to a  ride offer
+
++ Request
+    + Headers
+
+            Authorization: Bearer ABCDEF
 
 + Request (application/json)
 
@@ -145,6 +170,11 @@ Make a request to a  ride offer
 ### Get all Ride requests[GET]
 Gets all Ride request
 
++ Request
+    + Headers
+
+            Authorization: Bearer ABCDEF
+
 + Response 201 (application/json)
 
             {
@@ -159,6 +189,11 @@ Gets all Ride request
 ### Make a Ride Request  [/api/v2/rides/<int:ride_id>/requests/<int:request_id>]
 ### Accept or Reject Request to ride [PUT]
 Accept or reject ride request
+
++ Request
+    + Headers
+
+            Authorization: Bearer ABCDEF
 
 + Request (application/json)
 
