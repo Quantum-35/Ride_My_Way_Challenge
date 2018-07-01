@@ -31,7 +31,7 @@ def password_validator(password):
 
 def user_name_validator(username):
     """validates user provided username"""
-    if re.match("^[a-zA-Z]*$", username):
+    if re.match("^([a-zA-Z]{2,}\\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\\s?([a-zA-Z]{1,})?)", username):
         return True
 
 

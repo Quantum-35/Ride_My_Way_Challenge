@@ -21,7 +21,7 @@ class BaseTests (unittest.TestCase):
         create_rides()
         create_requests()
         self.test_user = {
-                    "username": "quantum",
+                    "username": "quantum Computing",
                     "email": "mike@gma.com",
                     "address": "3343312",
                     "password": "12345678",

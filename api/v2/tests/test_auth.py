@@ -41,7 +41,7 @@ class TestUserAuth(BaseTests):
     
     def test_user_send_post_registration_incorrect_email_format(self):
         response = self.client.post(SIGNUP_URL, data=json.dumps({
-                    "username": "quantum",
+                    "username": "quantum Computing",
                     "email": "quan",
                     "address": "122kitale",
                     "password": "12345678",
@@ -55,7 +55,7 @@ class TestUserAuth(BaseTests):
 
     def test_user_send_post_registration_short_password(self):
         response = self.client.post(SIGNUP_URL, data=json.dumps({
-                    "username": "quantum",
+                    "username": "quantum computing",
                     "email": "quan@gmail.com",
                     "address": "122kitale",
                     "password": "1",

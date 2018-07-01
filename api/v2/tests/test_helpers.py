@@ -18,4 +18,4 @@ class TestHelper(unittest.TestCase):
         self.assertTrue(password_validator('Hello World'))
 
     def test_user_name_is_valid(self):
-        self.assertTrue(user_name_validator('Quantum'))
+        self.assertTrue(user_name_validator('Quantum computing'))
