@@ -65,6 +65,19 @@ class TestUserAuth(BaseTests):
         self.assertTrue(response.status_code == 400)
         expected = {'message': 'short password.Enter atleast 6 characters'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+        # test for not matching password and confirm password
+        response = self.client.post(SIGNUP_URL, data=json.dumps({
+                    "username": "quantum computing",
+                    "email": "quan@gmail.com",
+                    "address": "122kitale",
+                    "password": "12212132131231231331231",
+                    "confirm_password": "11321213132121314114",
+                    "role": "driver"}),
+                    content_type='application/json')
+        self.assertTrue(response.status_code == 400)
+        expected = {'message': 'Failed, password and confirm password dont match'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
     
     def test_user_post_invalid_username(self):
         response = self.client.post(SIGNUP_URL, data=json.dumps({

@@ -33,6 +33,10 @@ def user_auth():
             return jsonify({
                 'message': "Failed you cannot submit empty fields",
                 'status': 'failed'}), 400
+        if password != conf_pass:
+            return jsonify({
+                'message': "Failed, password and confirm password dont match",
+                'status': 'failed'}), 400
         if not user_name_validator(username):
             return jsonify({
                 'message': 'Wrong username Format',
