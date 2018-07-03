@@ -110,6 +110,7 @@ def handle_login():
                 return jsonify({
                     'message': 'Logged in successfully',
                     'status': 'ok',
+                    'username': row[1],
                     'token': token
                 })
             else:
