@@ -45,6 +45,10 @@ def handle_created_ride(current_user):
         car_model = payload['car_model']
         driver_name = payload['driver_name']
         depature = payload['depature']
+        if origin == '' or destination == '' or car_model == '' or driver_name == '' or depature == '':
+            return jsonify({
+                    'message': 'You cannot send empty fields',
+                    'status': 'failed'}), 400
         ride = Rides(user_id=current_user[0],origin=origin, destination=destination,
                         car_model=car_model, driver_name=driver_name,
                         depature=depature)

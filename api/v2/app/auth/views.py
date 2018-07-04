@@ -27,7 +27,6 @@ def user_auth():
         address = payload['address']
         password = payload['password']
         conf_pass = payload['confirm_password']
-        print(current_app.config['ENV']=='production')
         if username == '' or email == '' or \
            password == '' or address == '' or conf_pass == '':
             return jsonify({

@@ -21,6 +21,18 @@ class TestRides(BaseTests):
         self.assertTrue(response.status_code == 201)
         expected = {'message': 'Ride Successfully Created'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
+        #test user posts empty rides
+        response = self.client.post('/api/v2/users/rides',
+                                    data = json.dumps({
+                                        "car_model": "",
+                                        "depature": "3343",
+                                        "destination": "Limuru",
+                                        "driver_name": "quantum",
+                                        "origin": "kitale"
+                                    }),
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 400)
 
         # Test for user getting details of a single ride
         response = self.client.get('/api/v2/rides/1',

@@ -20,7 +20,6 @@ class TestUserAuth(BaseTests):
             data=json.dumps(self.test_user),
             content_type='application/json'
         )
-        print(response.data)
         self.assertTrue(response.status_code == 201)
         expected = {'message': 'Signed up successfully'}
         self.assertTrue(expected['message'], json.loads(response.data)['message'])
