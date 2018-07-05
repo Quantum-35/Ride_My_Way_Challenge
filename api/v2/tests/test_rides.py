@@ -65,10 +65,16 @@ class TestRides(BaseTests):
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
         # Test for user fetching all requests to a ride offer
-        response = self.client.get('/api/v2/users/rides/4/requests',
+        response = self.client.get('/api/v2/users/rides/1/requests',
                                     content_type='application/json',
                                     headers=headers)
         self.assertTrue(response.status_code == 200)
+
+        # Test ride that does not exist
+        response = self.client.get('/api/v2/users/rides/111/requests',
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 404)
 
         #Test for user accept ride request 
         response = self.client.put('/api/v2/rides/1/requests/1',
@@ -76,6 +82,14 @@ class TestRides(BaseTests):
                                     content_type='application/json',
                                     headers=headers)
         self.assertTrue(response.status_code == 201)
+
+        # Test to accept rides that does not exist
+        response = self.client.put('/api/v2/rides/1333/requests/1',
+                                    data=json.dumps({"accepted": "True"}),
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 404)
+
 
         #Test for user Does not accept ride request 
         response = self.client.put('/api/v2/rides/1/requests/1',

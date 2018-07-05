@@ -135,21 +135,26 @@ def handle_fetch_ride_requests(curr_user, ride_id):
             conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
                                 database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
     curs = conn.cursor()
-    query = 'SELECT * FROM requests'
-    curs.execute(query)
+    query = 'SELECT * FROM requests WHERE ride_id=%s'
+    curs.execute(query, (ride_id,))
     row = curs.fetchall()
-    c = []
-    for u in row:
-        work = {
-            'request id': u[0],
-            'ride id': u[2],
-            'pickup Location': u[3],
-            'destination': u[4],
-            'pickup time': u[5],
-            'accepted': u[6],
-        }
-        c.append(work)
-    return jsonify(c)
+    if row:
+        c = []
+        for u in row:
+            work = {
+                'request id': u[0],
+                'ride id': u[2],
+                'pickup Location': u[3],
+                'destination': u[4],
+                'pickup time': u[5],
+                'accepted': u[6],
+            }
+            c.append(work)
+        return jsonify(c)
+    else:
+        return jsonify({
+            'message': 'sorry, ride with that id does not exist',
+            'status': 'failed'}), 404
 
 '''
 Route for accepting or rejecting ride offers
@@ -166,12 +171,20 @@ def handle_action_request(curr_user,ride_id, req_id):
             conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
                                 database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
         curs = conn.cursor()
-        query = "UPDATE requests SET accepted = %s where request_id = %s"
-        curs.execute(query, (action, req_id,))
-        conn.commit()
-        return jsonify({
-                'message': 'request successfully accepted',
-                'status': 'updated'}), 201
+        query = 'SELECT * FROM requests WHERE ride_id=%s'
+        curs.execute(query, (ride_id,))
+        row = curs.fetchall()
+        if row:
+            query = "UPDATE requests SET accepted = %s where request_id = %s"
+            curs.execute(query, (action, req_id,))
+            conn.commit()
+            return jsonify({
+                    'message': 'request successfully accepted',
+                    'status': 'ok'}), 201
+        else:
+            return jsonify({
+                    'message': 'Sorry, car with that id does not exist',
+                    'status': 'failed'}), 404
     else:
         return jsonify({
                     'message': 'you have not accepted request',
