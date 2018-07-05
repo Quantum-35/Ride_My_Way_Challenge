@@ -90,6 +90,12 @@ class TestRides(BaseTests):
                                     headers=headers)
         self.assertTrue(response.status_code == 404)
 
+        # Test for getting all ride requests
+        response = self.client.get('/api/v2/requests',
+                                  content_type='application/json',
+                                  headers=headers)
+        self.assertTrue(response.status_code == 200)
+
 
         #Test for user Does not accept ride request 
         response = self.client.put('/api/v2/rides/1/requests/1',

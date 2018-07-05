@@ -189,4 +189,30 @@ def handle_action_request(curr_user,ride_id, req_id):
         return jsonify({
                     'message': 'you have not accepted request',
                     'accepted': 'False'}), 200
+
     
+@rides.route('/requests', methods=['GET'])
+@token_required
+def handle_get_action_request(curr_user):
+    if current_app.config['TESTING']:
+        conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+    else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
+    curs = conn.cursor()
+    query = 'SELECT * FROM requests'
+    curs.execute(query)
+    row = curs.fetchall()
+    c = []
+    for u in row:
+        work= {
+        'request id': u[0],
+        'user id': u[1],
+        'ride id': u[2],
+        'pickup': u[3],
+        'destination': u[4],
+        'pickuptime': u[5],
+        'accepted': u[6],
+        'status': 'ok'}
+        c.append(work)
+    return jsonify(c)
