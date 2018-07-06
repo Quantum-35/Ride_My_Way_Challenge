@@ -28,9 +28,9 @@ class BaseTests (unittest.TestCase):
                     "confirm_password": "12345678"}
 
         self.test_ride_data = {
-            "car_model": "Mazda",
+            "car_model": "Tesla",
             "depature": "3343",
-            "destination": "Nakuru",
+            "destination": "Limuru",
             "driver_name": "quantum",
             "origin": "kitale"}
         self.request_data = {

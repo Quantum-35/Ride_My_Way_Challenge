@@ -18,6 +18,7 @@ class TestRides(BaseTests):
                                     data=json.dumps(self.test_ride_data),
                                     content_type='application/json',
                                     headers=headers)
+        print(response.data)
         self.assertTrue(response.status_code == 201)
         expected = {'message': 'Ride Successfully Created'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])

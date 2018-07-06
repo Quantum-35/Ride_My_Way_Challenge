@@ -9,7 +9,7 @@ rides = Blueprint('rides', __name__)
 
 @rides.route('/rides', methods=['GET'])
 @token_required
-def handle_rides(current_user):
+def handle_rides(email):
     if current_app.config['TESTING']:
         conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
     else :
@@ -97,6 +97,10 @@ def handle_join(curr_user, ride_id):
     destination = payload['destination']
     pickuptime = payload['pickuptime']
 
+    if pickup=='' or destination =='' or pickuptime == '':
+        return jsonify({
+            'message': 'You cant make an empty ride',
+            'status': 'failed'}), 400
     if current_app.config['TESTING']:
             conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
     else :

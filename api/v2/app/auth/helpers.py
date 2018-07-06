@@ -55,6 +55,6 @@ def token_required(f):
                 current_user = curs.fetchone()
                 return f(current_user, *args, **kwargs)
             return jsonify({'message':"Please login first, your session might have expired"}), 401
-        except Exception:
-            return jsonify({'message': 'Ensure you have logged in and received a valid token'}),400
+        except Exception as e:
+            return jsonify({'message': 'Ensure you have logged in and received a valid token', 'error':str(e)}),400
     return decorated
