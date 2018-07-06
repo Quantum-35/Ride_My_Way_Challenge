@@ -56,6 +56,16 @@ class TestRides(BaseTests):
                                     headers=headers)
         self.assertTrue(response.status_code == 200)
 
+        response = self.client.post('/api/v2/rides/1/requests',
+                                    data=json.dumps({
+                                        "pickup": "",
+                                        "destination": "",
+                                        "pickuptime": ""
+                                    }),
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 400)
+
         # Test for user trying to make request to ride that does not exist
         response = self.client.post('/api/v2/rides/1000000000000/requests',
                                     data=json.dumps(self.request_data),
