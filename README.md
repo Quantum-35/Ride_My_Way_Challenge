@@ -1,6 +1,6 @@
 # Ride My Way Challenge 3
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2.svg?branch=ft-develop-ch3-signup-%23158626501)](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge2)
+[![Build Status](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge.svg?branch=last-fix)](https://travis-ci.org/Quantum-35/Ride_My_Way_Challenge)
 [![Coverage Status](https://coveralls.io/repos/github/Quantum-35/Ride_My_Way_Challenge2/badge.svg?branch=fix-bugs)](https://coveralls.io/github/Quantum-35/Ride_My_Way_Challenge2?branch=fix-bugs)
 
 Ride-my App is a carpooling application that provides drivers with the ability to create ride offers

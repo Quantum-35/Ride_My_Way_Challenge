@@ -40,7 +40,7 @@ def create_rides():
                 destination VARCHAR(30),
                 car_model VARCHAR(50),
                 driver_name VARCHAR(50),
-                 seats VARCHAR(100),
+                seats VARCHAR(100),
                 depature VARCHAR(30))
         """)
     curs.execute(tbl_rides)
