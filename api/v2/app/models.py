@@ -72,13 +72,14 @@ class User:
 
 class Rides:
     
-    def __init__(self, user_id,origin, destination, car_model, driver_name, depature):
+    def __init__(self, user_id,origin, destination, car_model, driver_name, depature, seats):
         self.origin = origin
         self.destination = destination
         self.car_model = car_model
         self.driver_name = driver_name
         self.depature = depature
         self.user_id = user_id
+        self.seats = seats
         if current_app.config['TESTING']:
             self.conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
             
@@ -89,8 +90,8 @@ class Rides:
     def save_ride(self):
         create_rides()
         curs = self.conn.cursor()
-        query = 'INSERT INTO ride(user_id, origin, destination, car_model, driver_name, depature) VALUES(%s,%s, %s, %s, %s, %s)'
-        curs.execute(query, (self.user_id, self.origin, self.destination, self.car_model, self.driver_name, self.depature))
+        query = 'INSERT INTO ride(user_id, origin, destination, car_model, driver_name, depature, seats) VALUES(%s,%s, %s, %s, %s, %s, %s)'
+        curs.execute(query, (self.user_id, self.origin, self.destination, self.car_model, self.driver_name, self.depature, self.seats))
         self.conn.commit()
         self.conn.close()
 

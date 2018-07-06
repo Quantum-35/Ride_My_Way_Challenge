@@ -28,7 +28,8 @@ def handle_rides(email):
         'destination': u[3],
         'car model': u[4],
         'driver name': u[5],
-        'depature': u[6],
+        'Number of seats': u[6],
+        'depature': u[7],
         'status': 'ok'}
         c.append(work)
     return jsonify(c)
@@ -44,14 +45,15 @@ def handle_created_ride(current_user):
         destination = payload['destination']
         car_model = payload['car_model']
         driver_name = payload['driver_name']
+        seats = payload['seats']
         depature = payload['depature']
-        if origin == '' or destination == '' or car_model == '' or driver_name == '' or depature == '':
+        if origin == '' or destination == '' or car_model == '' or driver_name == '' or depature == '' or seats =='':
             return jsonify({
                     'message': 'You cannot send empty fields',
                     'status': 'failed'}), 400
         ride = Rides(user_id=current_user[0],origin=origin, destination=destination,
                         car_model=car_model, driver_name=driver_name,
-                        depature=depature)
+                        depature=depature , seats=seats)
         ride.save_ride()
         return jsonify({'message': 'Ride Successfully Created',
                         'status': 'ok'}), 201
@@ -78,7 +80,8 @@ def handle_singleroute(current_user, ride_id):
             'destination': row[3],
             'car_model': row[4],
             'driver name': row[5],
-            'depature': row[6],
+            'seats': row[6],
+            'depature': row[7],
             'status': 'ok'}), 200
     else:
         return jsonify({
@@ -182,6 +185,13 @@ def handle_action_request(curr_user,ride_id, req_id):
             query = "UPDATE requests SET accepted = %s where request_id = %s"
             curs.execute(query, (action, req_id,))
             conn.commit()
+            query = "SELECT * FROM ride WHERE ride_id=%s"
+            curs.execute(query,(ride_id,))
+            row3 = curs.fetchone()
+            seat = int(row3[6]) - int(1)
+            query = "UPDATE ride SET seats = %s  WHERE ride_id=%s"
+            curs.execute(query,(seat, ride_id,))
+            conn.commit()
             return jsonify({
                     'message': 'request successfully accepted',
                     'status': 'ok'}), 201
@@ -189,6 +199,23 @@ def handle_action_request(curr_user,ride_id, req_id):
             return jsonify({
                     'message': 'Sorry, car with that id does not exist',
                     'status': 'failed'}), 404
+    elif action=='False' or action=='false':
+        if current_app.config['TESTING']:
+            conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+        else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
+        curs = conn.cursor()
+        query = 'SELECT * FROM requests WHERE ride_id=%s'
+        curs.execute(query, (ride_id,))
+        row = curs.fetchall()
+        if row:
+            query = "UPDATE requests SET accepted = %s where request_id = %s"
+            curs.execute(query, (action, req_id,))
+            conn.commit()
+            return jsonify({
+                    'message': 'request successfully rejected',
+                    'status': 'ok'}), 201
     else:
         return jsonify({
                     'message': 'you have not accepted request',

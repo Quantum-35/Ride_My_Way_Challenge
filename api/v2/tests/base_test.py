@@ -32,7 +32,8 @@ class BaseTests (unittest.TestCase):
             "depature": "3343",
             "destination": "Limuru",
             "driver_name": "quantum",
-            "origin": "kitale"}
+            "origin": "kitale",
+             "seats": "20"}
         self.request_data = {
             "pickup": "limuru",
             "destination": "Nakuru",

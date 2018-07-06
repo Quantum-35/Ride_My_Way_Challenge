@@ -29,7 +29,8 @@ class TestRides(BaseTests):
                                         "depature": "3343",
                                         "destination": "Limuru",
                                         "driver_name": "quantum",
-                                        "origin": "kitale"
+                                        "origin": "kitale",
+                                        'seats':'20'
                                     }),
                                     content_type='application/json',
                                     headers=headers)
@@ -110,7 +111,15 @@ class TestRides(BaseTests):
 
         #Test for user Does not accept ride request 
         response = self.client.put('/api/v2/rides/1/requests/1',
-                                    data=json.dumps({"accepted": "NotTrue"}),
+                                    data=json.dumps({"accepted": "false"}),
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 201)
+        expected = {'message': 'request successfully rejected'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+
+        response = self.client.put('/api/v2/rides/1/requests/1',
+                                    data=json.dumps({"accepted": ""}),
                                     content_type='application/json',
                                     headers=headers)
         self.assertTrue(response.status_code == 200)
