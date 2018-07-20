@@ -26,6 +26,12 @@ class BaseTests (unittest.TestCase):
                     "address": "3343312",
                     "password": "12345678",
                     "confirm_password": "12345678"}
+        self.test_user2 = {
+                    "username": "quantum2 Computing",
+                    "email": "mike2@gma.com",
+                    "address": "3343312",
+                    "password": "12345678",
+                    "confirm_password": "12345678"}
 
         self.test_ride_data = {
             "car_model": "Tesla",

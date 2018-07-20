@@ -56,5 +56,5 @@ def token_required(f):
                 return f(current_user, *args, **kwargs)
             return jsonify({'message':"Please login first, your session might have expired"}), 401
         except Exception as e:
-            return jsonify({'message': 'Ensure you have logged in and received a valid token', 'error':str(e)}),400
+            return jsonify({'message': 'Ensure you have logged in and received a valid token'}),400
     return decorated

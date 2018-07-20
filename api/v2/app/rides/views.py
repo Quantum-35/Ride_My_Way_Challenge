@@ -99,7 +99,7 @@ def handle_join(curr_user, ride_id):
     pickup = payload['pickup']
     destination = payload['destination']
     pickuptime = payload['pickuptime']
-
+    print('current user form decorator',curr_user[0])
     if pickup=='' or destination =='' or pickuptime == '':
         return jsonify({
             'message': 'You cant make an empty ride',
@@ -113,23 +113,30 @@ def handle_join(curr_user, ride_id):
     query = 'SELECT * FROM ride WHERE ride_id=%s'
     curs.execute(query, (ride_id,))
     row = curs.fetchone()
-    if row:
-        ride_request = Requests(row[1], row[0], pickup, destination, pickuptime)
-        ride_request.save_request()
-        query = 'SELECT * FROM requests WHERE ride_id=%s'
-        curs.execute(query, (ride_id,))
-        row = curs.fetchone()
-        return jsonify({
-                'request id':row[0],
-                'ride_id': row[2],
-                'pickup': row[3],
-                'destination': row[4],
-                'pickup time': row[5],
-                'accepted': row[6]})
+    query = 'SELECT * FROM ride WHERE ride_id=%s'
+    curs.execute(query, (ride_id,))
+    row = curs.fetchone()
+    print('user id from db',row[1])
+    if row[1] != curr_user[0]:
+        if row:
+            ride_request = Requests(row[1], row[0], pickup, destination, pickuptime)
+            ride_request.save_request()
+            query = 'SELECT * FROM requests WHERE ride_id=%s'
+            curs.execute(query, (ride_id,))
+            row = curs.fetchone()
+            return jsonify({
+                    'request id':row[0],
+                    'ride_id': row[2],
+                    'pickup': row[3],
+                    'destination': row[4],
+                    'pickup time': row[5],
+                    'accepted': row[6]})
+        else:
+            return jsonify({
+                'message': 'Ride with that id Does not exist',
+                'status': 'failed'}), 404
     else:
-        return jsonify({
-            'message': 'Ride with that id Does not exist',
-            'status': 'failed'}), 404
+        return 'you cannot make requerst'
 ''''
 Route for user fetching all the ride requests
 '''
