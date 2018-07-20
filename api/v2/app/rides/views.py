@@ -136,7 +136,9 @@ def handle_join(curr_user, ride_id):
                 'message': 'Ride with that id Does not exist',
                 'status': 'failed'}), 404
     else:
-        return 'you cannot make requerst'
+        return jsonify({
+                'message': 'You can not make request to ride that you created',
+                'status': 'failed'}), 400
 ''''
 Route for user fetching all the ride requests
 '''

@@ -27,7 +27,7 @@ class BaseTests (unittest.TestCase):
                     "password": "12345678",
                     "confirm_password": "12345678"}
         self.test_user2 = {
-                    "username": "quantum2 Computing",
+                    "username": "Gilbert Computing",
                     "email": "mike2@gma.com",
                     "address": "3343312",
                     "password": "12345678",
@@ -63,11 +63,27 @@ class BaseTests (unittest.TestCase):
             data=json.dumps(self.test_user),
             content_type='application/json'
         )
+    def register_user2(self):
+        '''
+        Helper method for registering users
+        '''
+        return self.client.post(
+            SIGNUP_URL,
+            data=json.dumps(self.test_user2),
+            content_type='application/json'
+        )
         
     def login_user(self):
         self.register_user()
         return self.client.post(
             SIGNIN_URL,
             data=json.dumps(self.test_user),
+            content_type='application/json'
+        )
+    def login_user2(self):
+        self.register_user()
+        return self.client.post(
+            SIGNIN_URL,
+            data=json.dumps(self.test_user2),
             content_type='application/json'
         )
