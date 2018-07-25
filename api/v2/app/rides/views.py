@@ -240,8 +240,8 @@ def handle_get_action_request(curr_user):
             conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
                                 database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
     curs = conn.cursor()
-    query = 'SELECT * FROM requests'
-    curs.execute(query)
+    query = 'SELECT * FROM requests WHERE user_id = %s'
+    curs.execute(query, (curr_user[0],))
     row = curs.fetchall()
     c = []
     for u in row:

@@ -59,6 +59,14 @@ class TestRides(BaseTests):
                                     headers=headers)
         self.assertTrue(response.status_code == 404)
 
+        # Test for getting all ride requests
+
+        response = self.client.get('/api/v2/requests',
+                                  content_type='application/json',
+                                  headers=headers)
+        print(response.data)
+        self.assertTrue(response.status_code == 200)
+
     def test_user_can_make_riderequests(self):
         response = self.register_user()
         self.assertTrue(response.status_code == 201)
@@ -159,7 +167,3 @@ class TestRides(BaseTests):
                                     headers=headers)
         print(response.data)
         self.assertTrue(response.status_code == 404)
-        
-        
-        
-    
