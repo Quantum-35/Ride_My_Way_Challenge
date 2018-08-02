@@ -52,8 +52,7 @@ class TestRides(BaseTests):
         expected = {'message': 'Ride with that id Does not exist'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
-        # Test ride that does not exist
-
+        # User getting all rides ever joined
         response = self.client.get('/api/v2/users/rides/111000000000',
                                     content_type='application/json',
                                     headers=headers)
@@ -65,7 +64,7 @@ class TestRides(BaseTests):
                                   content_type='application/json',
                                   headers=headers)
         print(response.data)
-        self.assertTrue(response.status_code == 200)
+        self.assertTrue(response.status_code == 404)
 
     def test_user_can_make_riderequests(self):
         response = self.register_user()
@@ -80,6 +79,13 @@ class TestRides(BaseTests):
                                     headers=headers)
         self.assertTrue(response.status_code == 201)
         expected = {'message': 'Ride Successfully Created'}
+        self.assertEquals(expected['message'], json.loads(response.data)['message'])
+        # Test ride that does not exist
+
+        response = self.client.get('/api/v2/user/myrides',
+                                    content_type='application/json',
+                                    headers=headers)
+        expected = {'message': 'You have never Joined any Ride request'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
         response = self.register_user2()
@@ -160,10 +166,20 @@ class TestRides(BaseTests):
         response = self.client.get('/api/v2/requests',
                                   content_type='application/json',
                                   headers=headers)
-        self.assertTrue(response.status_code == 200)
+        self.assertTrue(response.status_code == 404)
 
         response = self.client.get('/api/v2/users/rides/111/requests',
                                     content_type='application/json',
                                     headers=headers)
-        print(response.data)
         self.assertTrue(response.status_code == 404)
+
+        # response = self.register_user()
+        # self.assertTrue(response.status_code == 201)
+        response = self.login_user()
+        self.assertTrue(response.status_code == 200)
+        access_token = json.loads(response.data)['token']
+        headers = dict(Authorization='Bearer {}'.format(access_token))
+        response = self.client.get('/api/v2/requests',
+                                  content_type='application/json',
+                                  headers=headers)
+        self.assertTrue(response.status_code == 200)

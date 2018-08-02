@@ -116,21 +116,23 @@ def handle_join(curr_user, ride_id):
     query = 'SELECT * FROM ride WHERE ride_id=%s'
     curs.execute(query, (ride_id,))
     row = curs.fetchone()
-    print('user id from db',row[1])
     if row[1] != curr_user[0]:
         if row:
-            ride_request = Requests(row[1], row[0], pickup, destination, pickuptime)
+            ride_request = Requests(row[1], row[0], curr_user[0],pickup, destination, pickuptime)
             ride_request.save_request()
             query = 'SELECT * FROM requests WHERE ride_id=%s'
             curs.execute(query, (ride_id,))
             row = curs.fetchone()
+            print(row)
             return jsonify({
                     'request id':row[0],
+                    'created By': row[1],
                     'ride_id': row[2],
-                    'pickup': row[3],
-                    'destination': row[4],
-                    'pickup time': row[5],
-                    'accepted': row[6]})
+                    'joined by': row[3],
+                    'pickup': row[4],
+                    'destination': row[5],
+                    'pickup time': row[6],
+                    'accepted': row[7]})
         else:
             return jsonify({
                 'message': 'Ride with that id Does not exist',
@@ -243,16 +245,70 @@ def handle_get_action_request(curr_user):
     query = 'SELECT * FROM requests WHERE user_id = %s'
     curs.execute(query, (curr_user[0],))
     row = curs.fetchall()
-    c = []
-    for u in row:
-        work= {
-        'request id': u[0],
-        'user id': u[1],
-        'ride id': u[2],
-        'pickup': u[3],
-        'destination': u[4],
-        'pickuptime': u[5],
-        'accepted': u[6],
-        'status': 'ok'}
-        c.append(work)
-    return jsonify(c)
+    if row:
+        c = []
+        for u in row:
+            work= {
+            'request id': u[0],
+            'user id': u[1],
+            'ride id': u[2],
+            'pickup': u[3],
+            'destination': u[4],
+            'pickuptime': u[5],
+            'accepted': u[6],
+            'status': 'ok'}
+            c.append(work)
+        return jsonify(c)
+    else:
+        return jsonify({
+            'message': 'You have no Requests ',
+            'status': 'failed'}), 404
+
+    # Custom endpoints 
+@rides.route('/user/myrides', methods=['GET'])
+@token_required
+def handle_get_all_rides_user_has_taken(curr_user):
+    if current_app.config['TESTING']:
+        conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+    else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
+    curs = conn.cursor()
+    print(curr_user)
+    query = 'SELECT * FROM requests WHERE user_requested_id = %s'
+    curs.execute(query, (curr_user[0],))
+    row = curs.fetchall()
+    if row:
+        c = []
+        for u in row:
+            work= {
+            'request id': u[0],
+            'created by': u[1],
+            'ride id': u[2],
+            'joined by': u[3],
+            'pickup': u[4],
+            'destination': u[5],
+            'pickuptime': u[6],
+            'accepted': u[7],
+            'status': 'ok'}
+            c.append(work)
+        return jsonify(c)
+    else:
+        return jsonify({
+            'message':'You have never Joined any Ride request',
+            'status': 'failed'}), 404
+
+# # User Can Delete Ride reques
+# @rides.route('/user/rides/<int:ride_id>/requests', methods=['DELETE'])
+# @token_required
+# def handle_delete_ride(curr_user):
+#     if current_app.config['TESTING']:
+#         conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+#     else :
+#             conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+#                                 database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
+#     curs = conn.cursor()
+#     print(curr_user)
+#     query = 'SELECT * FROM requests WHERE user_requested_id = %s'
+#     curs.execute(query, (curr_user[0],))
+#     row = curs.fetchall()

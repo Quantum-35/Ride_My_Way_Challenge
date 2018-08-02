@@ -65,6 +65,7 @@ def create_requests():
                 ride_id INTEGER 
                 REFERENCES ride (ride_id)
                 ON UPDATE CASCADE ON DELETE CASCADE,
+                user_requested_id INTEGER,
                 pickup VARCHAR(30),
                 destination VARCHAR(50),
                 pickuptime VARCHAR(50),

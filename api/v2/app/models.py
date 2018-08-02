@@ -98,9 +98,10 @@ class Rides:
 class Requests:
     
     accepted = 'False'
-    def __init__(self, user_id,ride_id, pickup, destination, pickuptime, accepted='false'):
+    def __init__(self, user_id,ride_id, user_req, pickup, destination, pickuptime, accepted='false'):
         self.user_id = user_id
         self.ride_id = ride_id
+        self.user_req = user_req
         self.pickup = pickup
         self.destination = destination
         self.pickuptime = pickuptime
@@ -115,7 +116,7 @@ class Requests:
     def save_request(self):
         create_requests()
         curs = self.conn.cursor()
-        query = 'INSERT INTO requests(user_id, ride_id, pickup, destination, pickuptime, accepted) VALUES(%s, %s, %s, %s, %s, %s)'
-        curs.execute(query, (self.user_id, self.ride_id, self.pickup, self.destination, self.pickuptime, self.accepted))
+        query = 'INSERT INTO requests(user_id, ride_id, user_requested_id, pickup, destination, pickuptime, accepted) VALUES(%s, %s, %s, %s, %s, %s, %s)'
+        curs.execute(query, (self.user_id, self.ride_id, self.user_req, self.pickup, self.destination, self.pickuptime, self.accepted))
         self.conn.commit()
         self.conn.close()
