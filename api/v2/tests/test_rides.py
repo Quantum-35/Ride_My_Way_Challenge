@@ -22,6 +22,11 @@ class TestRides(BaseTests):
         expected = {'message': 'Ride Successfully Created'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
         #test user posts empty rides
+
+        response = self.client.get('/api/v2/users/ride',
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 200)
         
         response = self.client.post('/api/v2/users/rides',
                                     data = json.dumps({
@@ -173,8 +178,11 @@ class TestRides(BaseTests):
                                     headers=headers)
         self.assertTrue(response.status_code == 404)
 
-        # response = self.register_user()
-        # self.assertTrue(response.status_code == 201)
+        response = self.client.get('/api/v2/users/ride',
+                                    content_type='application/json',
+                                    headers=headers)
+        self.assertTrue(response.status_code == 404)
+        
         response = self.login_user()
         self.assertTrue(response.status_code == 200)
         access_token = json.loads(response.data)['token']

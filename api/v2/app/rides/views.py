@@ -298,17 +298,37 @@ def handle_get_all_rides_user_has_taken(curr_user):
             'message':'You have never Joined any Ride request',
             'status': 'failed'}), 404
 
-# # User Can Delete Ride reques
-# @rides.route('/user/rides/<int:ride_id>/requests', methods=['DELETE'])
-# @token_required
-# def handle_delete_ride(curr_user):
-#     if current_app.config['TESTING']:
-#         conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
-#     else :
-#             conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
-#                                 database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
-#     curs = conn.cursor()
-#     print(curr_user)
-#     query = 'SELECT * FROM requests WHERE user_requested_id = %s'
-#     curs.execute(query, (curr_user[0],))
-#     row = curs.fetchall()
+# User Can view all rides  made
+
+@rides.route('/users/ride', methods=['GET'])
+@token_required
+def handle_can_get_rides_created(curr_user):
+    if current_app.config['TESTING']:
+        conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+    else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
+    curs = conn.cursor()
+    query = 'SELECT * FROM ride WHERE user_id=%s'
+    curs.execute(query, (curr_user[0],))
+    row = curs.fetchall()
+    if row:
+        c = []
+        for u in row:
+            work= {
+            'ride id': u[0],
+            'user id': u[1],
+            'origin': u[2],
+            'destination': u[3],
+            'car model': u[4],
+            'driver name': u[5],
+            'Number of seats': u[6],
+            'depature': u[7],
+            'status': 'ok'}
+            c.append(work)
+        return jsonify(c)
+    else:
+        return jsonify({
+            'message': 'You have never created any ride',
+            'status': 'failed'
+        }), 404
