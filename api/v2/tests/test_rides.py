@@ -71,6 +71,8 @@ class TestRides(BaseTests):
         print(response.data)
         self.assertTrue(response.status_code == 404)
 
+        
+
     def test_user_can_make_riderequests(self):
         response = self.register_user()
         self.assertTrue(response.status_code == 201)
@@ -93,6 +95,12 @@ class TestRides(BaseTests):
         expected = {'message': 'You have never Joined any Ride request'}
         self.assertEquals(expected['message'], json.loads(response.data)['message'])
 
+        
+        response = self.client.delete('/api/v2/users/ride/2',
+                                      content_type='application/json',
+                                      headers=headers)
+        self.assertTrue(response.status_code == 200) 
+        
         response = self.register_user2()
         self.assertTrue(response.status_code == 201)
         response = self.login_user2()

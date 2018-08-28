@@ -332,3 +332,28 @@ def handle_can_get_rides_created(curr_user):
             'message': 'You have never created any ride',
             'status': 'failed'
         }), 404
+
+#User can delete the rides made
+
+@rides.route('/users/ride/<int:ride_id>', methods=['DELETE'])
+@token_required
+def handle_can_delete_rides_created(curr_user, ride_id):
+    if current_app.config['TESTING']:
+        conn  = psycopg2.connect(host="localhost",database="test_rides", user="foo", password="bar")
+    else :
+            conn  = psycopg2.connect(host="ec2-54-227-247-225.compute-1.amazonaws.com",
+                                database="d59bsstdnueu2j", user="evmawfgeuwoycc", password="51bf40de92130e038cef26d265e51c504b62bb8449d48f4794c1da44bb69a947")
+    curs = conn.cursor()
+    query = 'SELECT * FROM ride WHERE user_id=%s'
+    curs.execute(query, (curr_user[0],))
+    row = curs.fetchall()
+    if row:
+         query = "DELETE FROM ride WHERE ride_id=%s"
+         curs.execute(query, (ride_id,))
+         conn.commit()
+         return jsonify({
+             'message': 'Ride Sucessfully deleted',
+             'status': 'ok'})
+    return jsonify({
+        'message': 'Ride not Deleted',
+        'status': 'failed'}), 400
